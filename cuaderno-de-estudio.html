@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cuaderno de estudio — Conjuntos y Microeconomía</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<style>
+:root{
+  --paper:#EFF1F3;
+  --surface:#FFFFFF;
+  --ink:#16222E;
+  --ink-soft:#4C5A69;
+  --ink-faint:#7A8794;
+  --rule:#CBD3DA;
+  --rule-soft:#E1E6EA;
+  --set-a:#2A5DA8;
+  --set-b:#B03A34;
+  --accent:#6B3FA0;
+  --accent-soft:#F0EAF8;
+  --teal:#10656B;
+  --teal-soft:#E4F0F0;
+  --hue:var(--accent);
+  --hue-soft:var(--accent-soft);
+  --serif:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,'Times New Roman',serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:5.5rem}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--serif);font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--hue)}
+:focus-visible{outline:2px solid var(--hue);outline-offset:3px;border-radius:2px}
+
+/* ---------- Masthead ---------- */
+.masthead{
+  border-bottom:1px solid var(--rule);
+  background:var(--surface);
+  padding:2.6rem 1.5rem 0;
+}
+.masthead-inner{max-width:1180px;margin:0 auto}
+.masthead h1{
+  font-size:clamp(1.9rem,4.6vw,3rem);font-weight:600;letter-spacing:-.02em;
+  margin:0 0 .35rem;line-height:1.1;
+}
+.masthead p{margin:0 0 1.9rem;color:var(--ink-soft);max-width:62ch;font-size:1.02rem}
+
+/* Track tabs */
+.tracks{display:flex;gap:0;margin:0;padding:0;list-style:none;border-bottom:0}
+.track-btn{
+  font-family:var(--serif);font-size:1.02rem;background:none;border:0;
+  border-bottom:3px solid transparent;color:var(--ink-faint);
+  padding:.7rem 0;margin-right:2.2rem;cursor:pointer;letter-spacing:.01em;
+}
+.track-btn .num{font-variant-numeric:tabular-nums;color:var(--rule);margin-right:.5rem}
+.track-btn[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--tab-hue)}
+.track-btn:hover{color:var(--ink)}
+
+/* ---------- Layout ---------- */
+.layout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:232px minmax(0,1fr);gap:3.2rem;padding:0 1.5rem 6rem}
+.sidebar{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;padding:2.2rem 0 2rem}
+.toc{list-style:none;margin:0;padding:0;font-size:.9rem;line-height:1.45}
+.toc li{margin:0}
+.toc a{
+  display:block;padding:.34rem 0 .34rem .85rem;color:var(--ink-soft);
+  text-decoration:none;border-left:2px solid var(--rule-soft);
+}
+.toc a:hover{color:var(--ink);border-left-color:var(--ink-faint)}
+.toc a.active{color:var(--hue);border-left-color:var(--hue);font-weight:600}
+.toc .sub a{padding-left:1.7rem;font-size:.85rem}
+.toc-head{font-size:.78rem;letter-spacing:.06em;color:var(--ink-faint);margin:1.5rem 0 .5rem .85rem}
+.toc-head:first-child{margin-top:0}
+
+main{padding:2.2rem 0 0;min-width:0}
+.track{display:none}
+.track.on{display:block}
+
+/* ---------- Prose ---------- */
+.prose{max-width:70ch}
+h2{font-size:1.85rem;font-weight:600;letter-spacing:-.015em;margin:3.6rem 0 .3rem;line-height:1.18}
+h2:first-of-type{margin-top:0}
+h2 .kicker{display:block;font-size:.82rem;font-weight:400;color:var(--hue);letter-spacing:.05em;margin-bottom:.3rem}
+h3{font-size:1.24rem;font-weight:600;margin:2.4rem 0 .6rem;line-height:1.3}
+h4{font-size:1.03rem;font-weight:600;margin:1.7rem 0 .4rem;color:var(--ink)}
+p{margin:0 0 1.05rem}
+ul,ol{margin:0 0 1.1rem;padding-left:1.35rem}
+li{margin-bottom:.42rem}
+strong{font-weight:600}
+hr{border:0;border-top:1px solid var(--rule);margin:3rem 0}
+code{font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:.88em;background:var(--surface);border:1px solid var(--rule-soft);border-radius:3px;padding:.08em .35em}
+
+/* ---------- Blocks: solid = closed set (definitions), dashed = open (examples) ---------- */
+.block{background:var(--surface);padding:1.05rem 1.3rem;margin:1.5rem 0;border-radius:2px}
+.block > :last-child{margin-bottom:0}
+.block .tag{
+  display:block;font-size:.79rem;letter-spacing:.05em;color:var(--hue);
+  margin-bottom:.45rem;font-weight:600;
+}
+.def{border:1.5px solid var(--hue)}
+.thm{border:1.5px solid var(--ink);}
+.thm .tag{color:var(--ink)}
+.ex{border:1.5px dashed var(--rule);background:transparent}
+.ex .tag{color:var(--ink-faint)}
+.proof{border-left:2px solid var(--rule);padding:.2rem 0 .2rem 1.2rem;margin:1.3rem 0;background:none;border-radius:0}
+.proof .tag{color:var(--ink-faint)}
+.note{border-left:3px solid var(--hue);background:var(--hue-soft);padding:.9rem 1.2rem;margin:1.5rem 0;border-radius:0 2px 2px 0}
+.note > :last-child{margin-bottom:0}
+.warn{border-left:3px solid var(--set-b);background:#FBECEA;padding:.9rem 1.2rem;margin:1.5rem 0;border-radius:0 2px 2px 0}
+.warn > :last-child{margin-bottom:0}
+
+/* ---------- Tables ---------- */
+.tw{overflow-x:auto;margin:1.5rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem;background:var(--surface)}
+th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+thead th{border-bottom:1.5px solid var(--ink);font-weight:600;font-size:.88rem}
+tbody tr:last-child td{border-bottom:0}
+
+/* ---------- Venn hero ---------- */
+.venn-panel{background:var(--surface);border:1px solid var(--rule);padding:1.6rem;margin:0 0 2.6rem;border-radius:2px}
+.venn-wrap{display:flex;gap:1.8rem;align-items:center;flex-wrap:wrap}
+.venn-wrap svg{flex:0 0 300px;max-width:100%;height:auto}
+.venn-ctrl{flex:1 1 220px;min-width:200px}
+.venn-ctrl h3{margin:0 0 .7rem;font-size:1.05rem}
+.opbar{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.9rem}
+.opbar button{
+  font-family:var(--serif);font-size:1rem;padding:.4rem .75rem;cursor:pointer;
+  background:var(--surface);border:1px solid var(--rule);color:var(--ink-soft);border-radius:2px;
+}
+.opbar button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.opbar button:hover{border-color:var(--ink-faint)}
+#vennCaption{font-size:.93rem;color:var(--ink-soft);min-height:3.4em;margin:0}
+#vennCaption b{color:var(--ink)}
+.region{transition:fill-opacity .22s ease}
+@media (prefers-reduced-motion:reduce){.region{transition:none}}
+
+/* ---------- WARP calculator ---------- */
+.calc{background:var(--surface);border:1px solid var(--rule);padding:1.6rem;margin:0 0 2.6rem;border-radius:2px}
+.calc h3{margin:0 0 .3rem;font-size:1.05rem}
+.calc .lede{font-size:.93rem;color:var(--ink-soft);margin:0 0 1.1rem}
+.obs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.1rem;margin-bottom:1.1rem}
+.obs{border:1px dashed var(--rule);padding:.85rem 1rem;border-radius:2px}
+.obs h4{margin:0 0 .6rem;font-size:.95rem;color:var(--teal)}
+.fld{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;font-size:.9rem}
+.fld label{width:2.6rem;color:var(--ink-soft)}
+.fld input{
+  flex:1;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;
+  padding:.34rem .5rem;border:1px solid var(--rule);border-radius:2px;background:var(--paper);color:var(--ink);min-width:0;
+}
+.calc-actions{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem}
+.btn{
+  font-family:var(--serif);font-size:.96rem;padding:.45rem 1rem;cursor:pointer;border-radius:2px;
+  background:var(--teal);border:1px solid var(--teal);color:#fff;
+}
+.btn.ghost{background:var(--surface);color:var(--ink-soft);border-color:var(--rule)}
+.btn.ghost:hover{border-color:var(--ink-faint);color:var(--ink)}
+#warpOut{font-size:.93rem;margin:0}
+#warpOut .line{padding:.3rem 0;border-bottom:1px solid var(--rule-soft)}
+#warpOut .line:last-child{border-bottom:0}
+.verdict{margin-top:.9rem;padding:.7rem .95rem;border-radius:2px;font-size:.97rem}
+.verdict.ok{background:var(--teal-soft);border-left:3px solid var(--teal)}
+.verdict.bad{background:#FBECEA;border-left:3px solid var(--set-b)}
+.verdict.none{background:var(--paper);border-left:3px solid var(--rule)}
+
+/* ---------- Self-check ---------- */
+.check{background:var(--surface);border:1px solid var(--rule);padding:1.3rem 1.5rem;margin:1.6rem 0;border-radius:2px}
+.check h4{margin:0 0 .8rem}
+.check ul{list-style:none;padding:0;margin:0}
+.check li{margin-bottom:.55rem;display:flex;gap:.65rem;align-items:flex-start;font-size:.96rem}
+.check input[type=checkbox]{margin-top:.42rem;accent-color:var(--hue);flex:0 0 auto;width:15px;height:15px;cursor:pointer}
+.check label{cursor:pointer;color:var(--ink-soft)}
+.check input:checked + label{color:var(--ink-faint);text-decoration:line-through}
+.progress{font-size:.88rem;color:var(--ink-faint);margin:.9rem 0 0;font-variant-numeric:tabular-nums}
+
+/* ---------- Map / pre ---------- */
+pre.map{
+  background:var(--surface);border:1px solid var(--rule);padding:1.1rem;overflow-x:auto;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;line-height:1.55;border-radius:2px;
+}
+
+/* ---------- Mobile ---------- */
+.toc-toggle{display:none}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;gap:0;padding-bottom:4rem}
+  .sidebar{position:static;max-height:none;padding:1rem 0 0;overflow:visible}
+  .toc-toggle{
+    display:block;width:100%;text-align:left;font-family:var(--serif);font-size:.95rem;
+    background:var(--surface);border:1px solid var(--rule);padding:.6rem .9rem;
+    color:var(--ink-soft);cursor:pointer;border-radius:2px;
+  }
+  .toc-body{display:none;padding-top:.8rem}
+  .toc-body.open{display:block}
+  .venn-wrap{flex-direction:column;align-items:stretch}
+  .venn-wrap svg{flex:none;align-self:center;max-width:280px}
+  .masthead{padding-top:1.8rem}
+  .track-btn{margin-right:1.4rem;font-size:.95rem}
+}
+.katex{font-size:1.03em}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:.2rem 0}
+footer{border-top:1px solid var(--rule);padding:1.8rem 1.5rem 3rem;color:var(--ink-faint);font-size:.88rem}
+footer div{max-width:1180px;margin:0 auto;max-width:70ch}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <h1>Cuaderno de estudio</h1>
+    <p>Dos materias, un solo lugar: la teoría de conjuntos que fundamenta las demostraciones, y la teoría del consumidor que las usa. Elige una pista.</p>
+    <div class="tracks" role="tablist">
+      <button class="track-btn" role="tab" id="tab-sets" aria-controls="track-sets" aria-selected="true" style="--tab-hue:var(--accent)">
+        <span class="num">3</span>Conjuntos
+      </button>
+      <button class="track-btn" role="tab" id="tab-micro" aria-controls="track-micro" aria-selected="false" style="--tab-hue:var(--teal)">
+        <span class="num">1·2</span>Microeconomía
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <button class="toc-toggle" id="tocToggle" aria-expanded="false">Contenido</button>
+    <div class="toc-body" id="tocBody">
+      <nav id="nav-sets">
+        <p class="toc-head">Bloch, cap. 3</p>
+        <ul class="toc">
+          <li><a href="#s31">3.1 Introducción</a></li>
+          <li><a href="#s32">3.2 Definiciones básicas</a></li>
+          <li><a href="#s33">3.3 Operaciones</a></li>
+          <li><a href="#s34">3.4 Familias de conjuntos</a></li>
+          <li><a href="#s35">3.5 Axiomas</a></li>
+          <li class="sub"><a href="#russell">Paradoja de Russell</a></li>
+          <li class="sub"><a href="#zf">Los axiomas ZF</a></li>
+          <li class="sub"><a href="#ac">Axioma de Elección</a></li>
+          <li class="sub"><a href="#zorn">Lema de Zorn</a></li>
+          <li><a href="#s3err">Errores frecuentes</a></li>
+          <li><a href="#s3auto">Autoevaluación</a></li>
+        </ul>
+      </nav>
+      <nav id="nav-micro" hidden>
+        <p class="toc-head">Jehle &amp; Reny §1.2</p>
+        <ul class="toc">
+          <li><a href="#mnot">Notación</a></li>
+          <li><a href="#m121">1.2.1 Preferencias</a></li>
+          <li class="sub"><a href="#axiomas">Los cinco axiomas</a></li>
+          <li><a href="#m122">1.2.2 Utilidad</a></li>
+          <li class="sub"><a href="#t11">Teorema 1.1</a></li>
+          <li class="sub"><a href="#t12">Teorema 1.2</a></li>
+          <li class="sub"><a href="#t13">Teorema 1.3</a></li>
+          <li><a href="#calculo">Herramientas de cálculo</a></li>
+        </ul>
+        <p class="toc-head">Jehle &amp; Reny §2.3</p>
+        <ul class="toc">
+          <li><a href="#warp">WARP</a></li>
+          <li><a href="#res1">Homogeneidad</a></li>
+          <li><a href="#res2">Slutsky</a></li>
+          <li><a href="#racional">¿Racionalizabilidad?</a></li>
+          <li><a href="#sarp">SARP</a></li>
+          <li><a href="#garp">GARP y Afriat</a></li>
+          <li><a href="#mapa">Mapa lógico</a></li>
+          <li><a href="#merr">Errores frecuentes</a></li>
+          <li><a href="#mauto">Autoevaluación</a></li>
+        </ul>
+      </nav>
+    </div>
+  </aside>
+
+  <main>
+
+  <!-- ============================ CONJUNTOS ============================ -->
+  <section class="track on" id="track-sets" role="tabpanel" aria-labelledby="tab-sets">
+
+    <div class="venn-panel">
+      <div class="venn-wrap">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de Venn interactivo de dos conjuntos">
+          <defs>
+            <clipPath id="clipA"><circle cx="115" cy="100" r="66"/></clipPath>
+            <clipPath id="clipB"><circle cx="185" cy="100" r="66"/></clipPath>
+          </defs>
+          <rect x="6" y="14" width="288" height="172" fill="none" stroke="var(--rule)" stroke-width="1"/>
+          <!-- regions -->
+          <g>
+            <circle id="rA" class="region" cx="115" cy="100" r="66" fill="var(--set-a)" fill-opacity="0"/>
+            <circle id="rB" class="region" cx="185" cy="100" r="66" fill="var(--set-b)" fill-opacity="0"/>
+            <g clip-path="url(#clipA)"><circle id="rAB" class="region" cx="185" cy="100" r="66" fill="var(--accent)" fill-opacity="0"/></g>
+          </g>
+          <circle cx="115" cy="100" r="66" fill="none" stroke="var(--set-a)" stroke-width="1.5"/>
+          <circle cx="185" cy="100" r="66" fill="none" stroke="var(--set-b)" stroke-width="1.5"/>
+          <text x="66" y="52" font-family="Georgia,serif" font-size="17" font-style="italic" fill="var(--set-a)">A</text>
+          <text x="228" y="52" font-family="Georgia,serif" font-size="17" font-style="italic" fill="var(--set-b)">B</text>
+        </svg>
+        <div class="venn-ctrl">
+          <h3>Regiones sombreadas</h3>
+          <div class="opbar" id="opbar">
+            <button data-op="union" aria-pressed="true">A ∪ B</button>
+            <button data-op="inter" aria-pressed="false">A ∩ B</button>
+            <button data-op="diff" aria-pressed="false">A − B</button>
+            <button data-op="diffb" aria-pressed="false">B − A</button>
+            <button data-op="sym" aria-pressed="false">Δ</button>
+          </div>
+          <p id="vennCaption"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+
+    <h2 id="s31"><span class="kicker">Sección 3.1</span>Introducción</h2>
+    <p>Esta sección no tiene matemática técnica; es un argumento filosófico sobre los fundamentos. Vale la pena entenderlo porque justifica todo lo que viene después.</p>
+
+    <h3>No se puede definir ni demostrar todo</h3>
+    <p>Si exigiéramos demostrar cada afirmación, cada demostración necesitaría apoyarse en otras, y esas en otras, infinitamente hacia atrás — o peor, en círculo. Lo mismo pasa con las definiciones: definir cada término requiere otros términos ya definidos.</p>
+    <p>La única salida es elegir un punto de partida:</p>
+    <ul>
+      <li><strong>Axiomas:</strong> enunciados que aceptamos sin demostración.</li>
+      <li><strong>Términos no definidos</strong> (<em>undefined terms</em>): objetos que no definimos, solo describimos por cómo se comportan.</li>
+    </ul>
+
+    <h3>El caso de Euclides</h3>
+    <p>Euclides intentó esto en <em>Los Elementos</em>: postuló axiomas y dedujo el resto. Dos observaciones del autor:</p>
+    <ol>
+      <li><strong>Hay huecos lógicos</strong> en <em>Los Elementos</em>, desde la demostración de la primera proposición del Libro I. Hilbert los cerró en 1899 con un sistema de axiomas más completo.</li>
+      <li><strong>Euclides no entendió que el problema también aplica a las definiciones.</strong> Su definición de línea recta («longitud sin anchura», «que yace uniformemente respecto de sus puntos») no define nada: ¿qué es «longitud»? ¿qué es «anchura»? Corresponde a nuestra intuición, pero no sirve como definición rigurosa.</li>
+    </ol>
+    <p>El error de fondo no son los detalles, sino <strong>el intento mismo de definir todo</strong>.</p>
+
+    <h3>La postura moderna</h3>
+    <p>Los objetos no definidos no incomodan porque, en el fondo, no existen «en sí mismos»: <strong>están determinados por las propiedades axiomáticas que les atribuimos</strong>, y son esas propiedades las que usamos en las demostraciones.</p>
+    <div class="note">
+      <p>Un malentendido común: creer que los matemáticos escriben colecciones arbitrarias de axiomas y juegan a ver qué sale. Falso por dos razones: axiomas elegidos al azar probablemente serían <strong>contradictorios</strong>, y aunque no lo fueran, <strong>no describirían nada interesante</strong>. Los sistemas reales (grupos, álgebra lineal, topología) surgieron tras largos períodos de estudio, con muchos ejemplos concretos y mucho ensayo y error.</p>
+    </div>
+
+    <h3>Por qué conjuntos</h3>
+    <p>La teoría de conjuntos es la base común de todos los sistemas axiomáticos de la matemática contemporánea. Es sorprendentemente reciente: la desarrolló <strong>Georg Cantor</strong> a finales del siglo XIX. El libro adopta un enfoque intuitivo (<em>naive set theory</em>) y construye rigurosamente sobre él; la versión axiomática llega en 3.5.</p>
+    <p>El epígrafe de Hilbert sobre el paraíso que Cantor creó es una respuesta a los matemáticos que, a principios del siglo XX, querían abandonar la teoría de conjuntos por las paradojas que aparecieron.</p>
+
+    <hr>
+
+    <h2 id="s32"><span class="kicker">Sección 3.2</span>Conjuntos — definiciones básicas</h2>
+
+    <h3>Notación</h3>
+    <p>Dos formas de describir un conjunto. <strong>Por extensión</strong>, listando elementos: $A = \{1,2,3,4\}$. <strong>Por comprensión</strong>, con una propiedad:</p>
+    $$S = \{n \in \mathbb{Z} \mid n \text{ es un cuadrado perfecto}\}$$
+    <p>La barra $\mid$ se lee <strong>«tal que»</strong> (<em>such that</em>). Algunos libros usan «:» en vez de «|»; significan exactamente lo mismo. Si queremos ser más precisos, podemos explicitar el cuantificador:</p>
+    $$S = \{n \in \mathbb{Z} \mid n = k^2 \text{ para algún } k \in \mathbb{Z}\}$$
+
+    <div class="note">
+      <p><strong>Nota de estilo (variables ligadas).</strong> El libro hace una observación sobre redacción que vale oro:</p>
+      <p>✗ «observe que $x \geq 0$ para todo $x \in S$» — aquí la $x$ está <strong>ligada por el cuantificador</strong>. Si después quieres seguir hablando de elementos de $S$, tienes que volver a definir $x$.</p>
+      <p>✓ «<strong>sea</strong> $x \in S$; entonces $x \geq 0$» — ahora $x$ está definida como un elemento de $S$, libre, y puedes usarla cuantas veces quieras sin redefinirla.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.2.1 — Intervalos</span>
+      <p>Sean $a,b \in \mathbb{R}$ con $a \leq b$.</p>
+      <div class="tw"><table>
+        <thead><tr><th>Tipo</th><th>Notación</th><th>Definición</th></tr></thead>
+        <tbody>
+          <tr><td>Abierto acotado</td><td>$(a,b)$</td><td>$\{x \in \mathbb{R} \mid a &lt; x &lt; b\}$</td></tr>
+          <tr><td>Cerrado acotado</td><td>$[a,b]$</td><td>$\{x \in \mathbb{R} \mid a \leq x \leq b\}$</td></tr>
+          <tr><td>Semiabierto</td><td>$[a,b)$</td><td>$\{x \in \mathbb{R} \mid a \leq x &lt; b\}$</td></tr>
+          <tr><td>Semiabierto</td><td>$(a,b]$</td><td>$\{x \in \mathbb{R} \mid a &lt; x \leq b\}$</td></tr>
+          <tr><td>Abierto no acotado</td><td>$(a,\infty)$</td><td>$\{x \in \mathbb{R} \mid a &lt; x\}$</td></tr>
+          <tr><td></td><td>$(-\infty,b)$</td><td>$\{x \in \mathbb{R} \mid x &lt; b\}$</td></tr>
+          <tr><td></td><td>$(-\infty,\infty)$</td><td>$\mathbb{R}$</td></tr>
+          <tr><td>Cerrado no acotado</td><td>$[a,\infty)$</td><td>$\{x \in \mathbb{R} \mid a \leq x\}$</td></tr>
+          <tr><td></td><td>$(-\infty,b]$</td><td>$\{x \in \mathbb{R} \mid x \leq b\}$</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="warn">
+      <p><strong>No existe</strong> un intervalo de la forma $[a,\infty]$. El símbolo $\infty$ <strong>no es un número real</strong>, así que no puede pertenecer a un subconjunto de $\mathbb{R}$. Es solo una abreviatura para decir que el intervalo «sigue indefinidamente».</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.2.2 — Subconjunto</span>
+      <p>Sean $A$ y $B$ conjuntos. $A$ es <strong>subconjunto</strong> de $B$, denotado $A \subseteq B$, si $x \in A$ implica $x \in B$. Si no lo es, escribimos $A \not\subseteq B$.</p>
+    </div>
+
+    <p><strong>Negación.</strong> $A \not\subseteq B$ significa $\neg(\forall x)([x \in A] \to [x \in B])$, equivalente a</p>
+    $$(\exists x)([x \in A] \wedge [x \notin B])$$
+    <p>Es decir: para probar que $A \not\subseteq B$ <strong>basta exhibir un solo elemento</strong> de $A$ que no esté en $B$.</p>
+
+    <div class="warn">
+      <p>Que $A \not\subseteq B$ no significa que no compartan nada. Pueden compartir muchos elementos; solo significa que <strong>no todos</strong> los de $A$ están en $B$.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.2.3</span>
+      <ol>
+        <li>$A = \{1,2,3,4\}$, $B = \{1,3\}$. Entonces $B \subseteq A$ y $A \not\subseteq B$.</li>
+        <li>Si $M$ es el conjunto de los hombres y $T$ el de los proctólogos: $T \not\subseteq M$ (no todos los proctólogos son hombres) y $M \not\subseteq T$ (no todos los hombres son proctólogos).</li>
+      </ol>
+    </div>
+
+    <div class="note">
+      <p><strong>Estrategia estándar para probar $A \subseteq B$.</strong> Esta es <em>la</em> técnica del capítulo: toma un elemento arbitrario $a \in A$ y usa las definiciones de $A$ y $B$ para deducir que $a \in B$. La demostración empieza siempre igual:</p>
+      <p><code>Demostración. Sea a ∈ A. … Por lo tanto a ∈ B. Luego A ⊆ B. ∎</code></p>
+    </div>
+
+    <div class="block thm">
+      <span class="tag">Lema 3.2.4 — Propiedades básicas de ⊆</span>
+      <p>Sean $A$, $B$, $C$ conjuntos.</p>
+      <ol>
+        <li>$A \subseteq A$</li>
+        <li>$\emptyset \subseteq A$</li>
+        <li>Si $A \subseteq B$ y $B \subseteq C$, entonces $A \subseteq C$</li>
+      </ol>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Demostración</span>
+      <p><strong>(1)</strong> Sea $a \in A$ (pensando en la $A$ del lado izquierdo de «$A \subseteq A$»). Entonces $a \in A$ (ahora la del lado derecho). Por la definición de subconjunto, $A \subseteq A$. Parece trivial y lo es, pero el punto pedagógico es que la estructura es la misma de siempre.</p>
+      <p><strong>(2)</strong> Dos demostraciones, ambas instructivas.</p>
+      <p><em>Directa.</em> Hay que mostrar que si $a \in \emptyset$, entonces $a \in A$. Como $a \in \emptyset$ es <strong>siempre falso</strong>, la implicación es <strong>siempre verdadera</strong> (falso → cualquier cosa = verdadero). Esto se llama <em>vacuously true</em>, verdadero por vacuidad.</p>
+      <p><em>Por contradicción.</em> Supongamos $\emptyset \not\subseteq A$. Entonces existe $x \in \emptyset$ con $x \notin A$. Pero no existe ningún $x$ tal que $x \in \emptyset$. Contradicción.</p>
+      <p><strong>(3)</strong> Sea $a \in A$. Como $A \subseteq B$, se sigue que $a \in B$. Como $B \subseteq C$, se sigue que $a \in C$. Por lo tanto $a \in A$ implica $a \in C$, y así $A \subseteq C$. ∎</p>
+      <p>Esta tercera es, según el autor, <strong>el tipo de demostración más típico del capítulo</strong>: sin trucos, solo encadenar definiciones.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.2.5 — Igualdad y subconjunto propio</span>
+      <p>Sean $A$ y $B$ conjuntos. $A = B$ si $A \subseteq B$ <strong>y</strong> $B \subseteq A$.</p>
+      <p>$A$ es <strong>subconjunto propio</strong> de $B$, denotado $A \subsetneq B$, si $A \subseteq B$ y $A \neq B$.</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Estrategia para probar $A = B$ (doble contención).</strong> La segunda técnica fundamental del capítulo:</p>
+      <p><code>Primero A ⊆ B: Sea x ∈ A. … Por lo tanto x ∈ B.</code><br>
+      <code>Ahora B ⊆ A: Sea y ∈ B. … Por lo tanto y ∈ A.</code><br>
+      <code>Concluimos que A = B. ∎</code></p>
+    </div>
+
+    <div class="warn">
+      <p><strong>Advertencia de notación.</strong> Hay variación en la literatura. Algunos textos usan $A \subset B$ para «subconjunto propio», otros usan $A \subset B$ para lo que aquí es $A \subseteq B$. Siempre verifica la convención del texto que estés leyendo.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.2.6</span>
+      <p><strong>(2)</strong> $X = \{a,b,c\}$, $Y = \{c,b,a\}$. Claramente $X \subseteq Y$ y $Y \subseteq X$, luego $X = Y$. <strong>El orden no importa en un conjunto.</strong></p>
+      <p><strong>(3)</strong> Un ejemplo completo de doble contención. Sean</p>
+      $$P = \{x \in \mathbb{R} \mid x^2 - 5x + 6 < 0\}, \qquad Q = \{x \in \mathbb{R} \mid 2 < x < 3\}$$
+      <p><em>Probamos $P \subseteq Q$.</em> Sea $y \in P$. Entonces $y^2 - 5y + 6 &lt; 0$, luego $(y-2)(y-3) &lt; 0$. Para que un producto sea negativo, los factores tienen signos opuestos. Dos casos:</p>
+      <ul>
+        <li>$y-2 &lt; 0$ y $y-3 &gt; 0$: daría $y &lt; 2$ y $3 &lt; y$. Ningún número cumple ambas. <strong>Caso imposible.</strong></li>
+        <li>$y-2 &gt; 0$ y $y-3 &lt; 0$: da $2 &lt; y &lt; 3$. Luego $y \in Q$.</li>
+      </ul>
+      <p><em>Probamos $Q \subseteq P$.</em> Sea $z \in Q$. Entonces $2 &lt; z &lt; 3$, luego $z-2 &gt; 0$ y $z-3 &lt; 0$. Su producto es negativo: $z^2 - 5z + 6 &lt; 0$. Luego $z \in P$. Concluimos $P = Q$. ∎</p>
+      <p>El autor advierte que puso más detalle del necesario a propósito, para hacer explícita la estrategia.</p>
+    </div>
+
+    <h3>Pertenencia vs. contención — el error más común</h3>
+    <p>Distinguir $\in$ de $\subseteq$ es crítico. Sea $A = \{a,b,c\}$:</p>
+    <div class="tw"><table>
+      <thead><tr><th>Afirmación</th><th>¿Verdadera?</th><th>Por qué</th></tr></thead>
+      <tbody>
+        <tr><td>$a \in A$</td><td>Sí</td><td>$a$ es un elemento de $A$</td></tr>
+        <tr><td>$\{a\} \subseteq A$</td><td>Sí</td><td>todo elemento de $\{a\}$ está en $A$</td></tr>
+        <tr><td>$a \subseteq A$</td><td>No</td><td>$a$ no es un conjunto</td></tr>
+        <tr><td>$\{a\} \in A$</td><td>No</td><td>los elementos de $A$ son $a,b,c$ — no $\{a\}$</td></tr>
+      </tbody>
+    </table></div>
+    <p>Y un conjunto puede ser elemento de otro conjunto. Sea $B = \{\{a\}, b, c\}$. Ojo: $B \neq A$. Aquí $\{a\} \in B$ sí es verdadero (ahora $\{a\}$ es literalmente uno de los elementos listados), $a \in B$ es falso, y $\{\{a\}\} \subseteq B$ es verdadero.</p>
+
+    <div class="block thm">
+      <span class="tag">Lema 3.2.7 — Propiedades de la igualdad</span>
+      <p>Sean $A$, $B$, $C$ conjuntos.</p>
+      <ol>
+        <li>$A = A$ &nbsp;<em>(reflexividad)</em></li>
+        <li>Si $A = B$ entonces $B = A$ &nbsp;<em>(simetría)</em></li>
+        <li>Si $A = B$ y $B = C$, entonces $A = C$ &nbsp;<em>(transitividad)</em></li>
+      </ol>
+      <p>La demostración se sigue de la Definición 3.2.5 junto con el Lema 3.2.4; el libro la deja al lector.</p>
+    </div>
+    <p>Estas tres propiedades reaparecen en el Capítulo 5: son exactamente las que definen una <strong>relación de equivalencia</strong>.</p>
+
+    <div class="block def">
+      <span class="tag">Definición 3.2.8 — Conjunto potencia</span>
+      <p>Sea $A$ un conjunto. El <strong>conjunto potencia</strong> de $A$, denotado $\mathcal{P}(A)$, es</p>
+      $$\mathcal{P}(A) = \{X \mid X \subseteq A\}$$
+      <p>Es decir: el conjunto cuyos elementos son todos los subconjuntos de $A$.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.2.9</span>
+      <p><strong>(1)</strong> Como $\emptyset \subseteq \emptyset$, se tiene $\mathcal{P}(\emptyset) = \{\emptyset\}$.</p>
+      <p>Nótese que $\mathcal{P}(\emptyset) \neq \emptyset$. El conjunto vacío no tiene elementos; $\{\emptyset\}$ tiene <strong>un</strong> elemento (que resulta ser el conjunto vacío). Es la diferencia entre una caja vacía y una caja que contiene una caja vacía.</p>
+      <p><strong>(2)</strong> Sea $A = \{a,b,c\}$. Sus subconjuntos son $\emptyset$, $\{a\}$, $\{b\}$, $\{c\}$, $\{a,b\}$, $\{a,c\}$, $\{b,c\}$, $\{a,b,c\}$ (el último no es propio, pero necesitamos <strong>todos</strong>). Entonces</p>
+      $$\mathcal{P}(A) = \{\emptyset, \{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}\}$$
+      <p><strong>(3)</strong> Si $A$ es finito con $n$ elementos, $\mathcal{P}(A)$ tiene $2^n$ elementos. Vale incluso para $n=0$: $2^0 = 1$. Se demuestra en el Teorema 7.7.10.</p>
+    </div>
+
+    <p>Si $A$ es finito, $|A|$ denota su número de elementos (su <strong>cardinalidad</strong>). «Finito» e «infinito» se usan intuitivamente en este capítulo; se definen con rigor en la Sección 6.5.</p>
+
+    <hr>
+
+    <h2 id="s33"><span class="kicker">Sección 3.3</span>Operaciones con conjuntos</h2>
+    <p>La idea: construir conjuntos nuevos a partir de otros, análogamente a cómo combinamos números con suma y multiplicación. La analogía más cercana, en realidad, es la de combinar <strong>enunciados lógicos</strong>: las dos operaciones básicas corresponden a «o» y «y».</p>
+
+    <div class="block def">
+      <span class="tag">Definición 3.3.1 — Unión e intersección</span>
+      $$A \cup B = \{x \mid x \in A \text{ o } x \in B\}$$
+      $$A \cap B = \{x \mid x \in A \text{ y } x \in B\}$$
+      <p>El «o» es <strong>inclusivo</strong>: $A \cup B$ contiene lo que está en $A$, en $B$, <strong>o en ambos</strong>.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.3.2</span>
+      <p>$A = \{x,y,z,p\}$, $B = \{x,q\}$: &nbsp; $A \cup B = \{x,y,z,p,q\}$ &nbsp;y&nbsp; $A \cap B = \{x\}$.</p>
+    </div>
+
+    <h3>Diagramas de Venn</h3>
+    <p>Un diagrama de Venn representa cada conjunto como una región del plano (el de arriba es interactivo). Sirven para convencerse intuitivamente de un resultado, pero el libro hace dos advertencias:</p>
+    <ol>
+      <li>Un diagrama de Venn es <strong>solo una ayuda visual, nunca sustituye una demostración</strong>.</li>
+      <li>Son difíciles de usar con más de tres conjuntos, lo que limita mucho su utilidad.</li>
+    </ol>
+
+    <div class="block thm">
+      <span class="tag">Teorema 3.3.3 — Propiedades de ∪ y ∩</span>
+      <p>Sean $A$, $B$, $C$ conjuntos.</p>
+      <div class="tw"><table>
+        <thead><tr><th>#</th><th>Enunciado</th><th>Nombre</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>$A \cap B \subseteq A$ y $A \cap B \subseteq B$. Si $X \subseteq A$ y $X \subseteq B$, entonces $X \subseteq A \cap B$</td><td>caracterización de ∩</td></tr>
+          <tr><td>2</td><td>$A \subseteq A \cup B$ y $B \subseteq A \cup B$. Si $A \subseteq Y$ y $B \subseteq Y$, entonces $A \cup B \subseteq Y$</td><td>caracterización de ∪</td></tr>
+          <tr><td>3</td><td>$A \cup B = B \cup A$ y $A \cap B = B \cap A$</td><td>Conmutativas</td></tr>
+          <tr><td>4</td><td>$(A \cup B) \cup C = A \cup (B \cup C)$ y $(A \cap B) \cap C = A \cap (B \cap C)$</td><td>Asociativas</td></tr>
+          <tr><td>5</td><td>$A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ y $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$</td><td>Distributivas</td></tr>
+          <tr><td>6</td><td>$A \cup \emptyset = A$ y $A \cap \emptyset = \emptyset$</td><td>Identidad</td></tr>
+          <tr><td>7</td><td>$A \cup A = A$ y $A \cap A = A$</td><td>Idempotencia</td></tr>
+          <tr><td>8</td><td>$A \cup (A \cap B) = A$ y $A \cap (A \cup B) = A$</td><td>Absorción</td></tr>
+          <tr><td>9</td><td>Si $A \subseteq B$, entonces $A \cup C \subseteq B \cup C$ y $A \cap C \subseteq B \cap C$</td><td>Monotonía</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="note">
+      <p><strong>Lo importante de (1) y (2).</strong> No son propiedades sueltas; dicen algo estructural: <strong>$A \cap B$ es el mayor conjunto contenido en $A$ y en $B$</strong>, y <strong>$A \cup B$ es el menor conjunto que contiene a $A$ y a $B$</strong>. Además son <em>herramientas de demostración</em> que se usan constantemente en el resto del capítulo.</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Demostración de (4) — asociatividad de ∪</span>
+      <p><em>($\subseteq$)</em> Sea $x \in (A \cup B) \cup C$. Entonces $x \in A \cup B$ o $x \in C$.</p>
+      <ul>
+        <li>Caso 1: $x \in A \cup B$, luego $x \in A$ o $x \in B$. Si $x \in A$, entonces $x \in A \cup (B \cup C)$ por la parte (2). Si $x \in B$, entonces $x \in B \cup C$, y por lo tanto $x \in A \cup (B\cup C)$.</li>
+        <li>Caso 2: $x \in C$. Por la parte (2), $x \in B \cup C$, y luego $x \in A \cup (B \cup C)$.</li>
+      </ul>
+      <p>Juntando ambos casos, $(A\cup B)\cup C \subseteq A \cup (B \cup C)$. La otra contención es análoga, intercambiando los roles de $A$ y $C$. ∎</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Demostración de (5) — distributividad</span>
+      <p>Probamos $A \cap (B \cup C) = (A\cap B)\cup(A\cap C)$.</p>
+      <p><em>($\subseteq$)</em> Sea $x \in A \cap (B\cup C)$. Entonces $x \in A$ y $x \in B \cup C$, luego $x \in B$ o $x \in C$. Si $x \in B$, como también $x \in A$, tenemos $x \in A \cap B$. Si $x \in C$, análogamente $x \in A \cap C$. En cualquier caso, por la parte (2), $x \in (A\cap B)\cup(A\cap C)$.</p>
+      <p><em>($\supseteq$)</em> Sea $y \in (A\cap B)\cup(A\cap C)$. Entonces $y \in A \cap B$ o $y \in A \cap C$. Si $y \in A\cap B$: $y \in A$ y $y \in B$; por la parte (2), $y \in B \cup C$, luego $y \in A \cap (B \cup C)$. El otro caso es análogo. ∎</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Observación conceptual.</strong> En la parte (5), <strong>cada operación distribuye sobre la otra</strong>. Esto es muy distinto de los números, donde la multiplicación distribuye sobre la suma pero <strong>no</strong> al revés: $a + (b \cdot c) \neq (a+b)(a+c)$.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.3.4 — Conjuntos disjuntos</span>
+      <p>$A$ y $B$ son <strong>disjuntos</strong> si $A \cap B = \emptyset$.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.3.5</span>
+      <p>$E$ = enteros pares, $O$ = enteros impares, $P$ = números primos. Entonces $E$ y $O$ son disjuntos, pero $E$ y $P$ <strong>no</strong> lo son, porque $E \cap P = \{2\}$.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.3.6 — Diferencia</span>
+      $$A - B = \{x \mid x \in A \text{ y } x \notin B\}$$
+      <p>Todo lo que está en $A$ pero no en $B$. Algunos libros escriben $A \setminus B$. <strong>No hace falta que $B \subseteq A$</strong>: la diferencia está definida para dos conjuntos cualesquiera.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.3.7</span>
+      <p>Con $A = \{x,y,z,p\}$ y $B = \{x,q\}$: &nbsp;$A - B = \{y,z,p\}$. Nótese que $q$ simplemente se ignora.</p>
+    </div>
+
+    <div class="block thm">
+      <span class="tag">Teorema 3.3.8 — Propiedades de la diferencia</span>
+      <div class="tw"><table>
+        <thead><tr><th>#</th><th>Enunciado</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>$A - B \subseteq A$</td></tr>
+          <tr><td>2</td><td>$(A-B) \cap B = \emptyset$</td></tr>
+          <tr><td>3</td><td>$A - B = \emptyset$ <strong>si y solo si</strong> $A \subseteq B$</td></tr>
+          <tr><td>4</td><td>$B - (B-A) = A$ <strong>si y solo si</strong> $A \subseteq B$</td></tr>
+          <tr><td>5</td><td>Si $A \subseteq B$, entonces $A - C = A \cap (B-C)$</td></tr>
+          <tr><td>6</td><td>Si $A \subseteq B$, entonces $C - A \supseteq C - B$</td></tr>
+          <tr><td>7</td><td>$C-(A\cup B) = (C-A)\cap(C-B)$ &nbsp;y&nbsp; $C-(A\cap B) = (C-A)\cup(C-B)$ &nbsp;<strong>(De Morgan)</strong></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="warn">
+      <p>Fíjate en la <strong>inversión del sentido</strong> en la parte (6): si $A$ es más chico que $B$, entonces quitarle $A$ a $C$ deja <strong>más</strong> de lo que queda al quitarle $B$.</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Demostración de (7) — De Morgan</span>
+      <p>Probamos $C - (A \cup B) = (C-A)\cap(C-B)$.</p>
+      <p><em>($\subseteq$)</em> Sea $x \in C-(A\cup B)$. Entonces $x \in C$ y $x \notin A \cup B$. De aquí, $x \notin A$ <strong>y</strong> $x \notin B$ (porque si estuviera en alguno, estaría en la unión). Como $x \in C$ y $x \notin A$, tenemos $x \in C-A$; como $x \in C$ y $x \notin B$, tenemos $x \in C-B$. Luego $x \in (C-A)\cap(C-B)$.</p>
+      <p><em>($\supseteq$)</em> Sea $y \in (C-A)\cap(C-B)$. De $y \in C-A$: $y \in C$ y $y \notin A$. De $y \in C-B$: $y \in C$ y $y \notin B$. Como $y \notin A$ y $y \notin B$, se sigue $y \notin A \cup B$. Luego $y \in C-(A\cup B)$. ∎</p>
+      <p>Las leyes de De Morgan para conjuntos son la traducción directa de las lógicas: $\neg(P \vee Q) \equiv \neg P \wedge \neg Q$.</p>
+    </div>
+
+    <h3>Pares ordenados</h3>
+    <p>En un conjunto <strong>el orden no importa</strong>: $\{a,b\} = \{b,a\}$. En un <strong>par ordenado</strong> $(a,b)$ sí importa. Propiedad fundamental:</p>
+    $$(a,b) = (c,d) \iff a = c \text{ y } b = d$$
+    <p>El libro toma el par ordenado como noción intuitiva, pero menciona que <strong>puede definirse rigurosamente en términos de conjuntos</strong>: la idea es representar $(a,b)$ como $\{\{a\},\{a,b\}\}$. Vale la pena que verifiques por qué esta construcción captura el orden.</p>
+
+    <div class="warn">
+      <p><strong>Colisión de notación:</strong> $(a,b)$ significa tanto «par ordenado» como «intervalo abierto». Ambos usos están tan extendidos que no hay remedio; en la práctica el contexto lo aclara.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.3.9 — Producto cartesiano</span>
+      $$A \times B = \{(a,b) \mid a \in A \text{ y } b \in B\}$$
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.3.10</span>
+      <p><strong>(1)</strong> $A = \{a,b,c\}$, $B = \{1,2\}$:</p>
+      $$A \times B = \{(a,1),(a,2),(b,1),(b,2),(c,1),(c,2)\}$$
+      <p><strong>(2)</strong> Tirar dos dados: los 36 resultados posibles son exactamente $\{1,\dots,6\} \times \{1,\dots,6\}$.</p>
+      <p><strong>(3)</strong> Si $A$ y $B$ son finitos, $|A \times B| = |A|\cdot|B|$ (Teorema 7.6.3).</p>
+      <p><strong>Ejemplo 3.3.11.</strong> $\mathbb{R}^2 = \mathbb{R}\times\mathbb{R}$, y en general $\mathbb{R}^n = \underbrace{\mathbb{R}\times\cdots\times\mathbb{R}}_{n\text{ veces}}$.</p>
+    </div>
+
+    <p><strong>Tecnicismo sobre productos triples.</strong> Estrictamente, $(A\times B)\times C$ y $A \times (B \times C)$ no son el mismo conjunto: el primero tiene elementos $((a,b),c)$ y el segundo $(a,(b,c))$. En la práctica no hay diferencia relevante, así que se escribe $A \times B \times C$ con elementos $(a,b,c)$.</p>
+
+    <div class="block thm">
+      <span class="tag">Teorema 3.3.12 — Propiedades del producto</span>
+      <div class="tw"><table>
+        <thead><tr><th>#</th><th>Enunciado</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Si $A \subseteq B$ y $C \subseteq D$, entonces $A \times C \subseteq B \times D$</td></tr>
+          <tr><td>2</td><td>$A \times (B\cup C) = (A\times B)\cup(A\times C)$ y $(B\cup C)\times A = (B\times A)\cup(C\times A)$</td></tr>
+          <tr><td>3</td><td>$A \times (B\cap C) = (A\times B)\cap(A\times C)$ y $(B\cap C)\times A = (B\times A)\cap(C\times A)$</td></tr>
+          <tr><td>4</td><td>$A \times \emptyset = \emptyset$ y $\emptyset \times A = \emptyset$</td></tr>
+          <tr><td>5</td><td>$(A\cap B)\times(C\cap D) = (A\times C)\cap(B\times D)$</td></tr>
+        </tbody>
+      </table></div>
+      <p><strong>$A \times B \neq B \times A$</strong> en general, salvo que $A = B$ o alguno sea vacío.</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Demostración de (3) — con un detalle sutil</span>
+      <p>Probamos $A \times (B\cap C) = (A\times B)\cap(A\times C)$.</p>
+      <p><em>($\supseteq$)</em> Sea $y \in (A\times B)\cap(A\times C)$.</p>
+      <p><strong>Aquí está el detalle fino.</strong> No sería correcto decir de entrada «$y$ es un par ordenado $(p,q)$», porque $(A\times B)\cap(A\times C)$ <strong>no tiene la forma $X \times Y$</strong> para ningún par de conjuntos. Hay que llegar a eso por otro camino.</p>
+      <p>Lo que sí podemos decir: $y \in A\times B$ y $y \in A \times C$. De lo primero deducimos $y = (a,b)$ con $a \in A$, $b \in B$. Como además $y \in A \times C$, tenemos $(a,b) \in A\times C$, y por lo tanto $b \in C$. Luego $b \in B \cap C$, y así $y \in A \times (B\cap C)$.</p>
+      <p><em>($\subseteq$)</em> Aquí el libro usa un enfoque distinto, más elegante. Por el Lema 3.2.4 (1), $A \subseteq A$. Por el Teorema 3.3.3 (1), $B\cap C \subseteq B$ y $B \cap C \subseteq C$. Por la parte (1) de este teorema, $A\times(B\cap C) \subseteq A \times B$ y $A\times(B\cap C)\subseteq A\times C$. Y por la segunda frase del Teorema 3.3.3 (1), $A \times (B\cap C) \subseteq (A\times B)\cap(A\times C)$. ∎</p>
+      <p>Lección: a veces <strong>combinar resultados previos</strong> es más limpio que tomar un elemento arbitrario.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.3.13 — Contraejemplo: (5) falla con ∪</span>
+      <p>Sean $A = \{1,2\}$, $B = \{2,3\}$, $C = \{x,y\}$, $D = \{y,z\}$.</p>
+      <p><em>Con $\cap$:</em> $A\cap B = \{2\}$, $C \cap D = \{y\}$, luego $(A\cap B)\times(C\cap D) = \{(2,y)\}$. Y $A\times C = \{(1,x),(1,y),(2,x),(2,y)\}$, $B \times D = \{(2,y),(2,z),(3,y),(3,z)\}$, cuya intersección es $\{(2,y)\}$. Coinciden.</p>
+      <p><em>Con $\cup$:</em> $A \cup B = \{1,2,3\}$, $C\cup D = \{x,y,z\}$, así que $(A\cup B)\times(C\cup D)$ tiene <strong>9</strong> elementos. Pero $(A\times C)\cup(B\times D)$ tiene solo <strong>7</strong>: faltan $(1,z)$ y $(3,x)$.</p>
+      <p>Por lo tanto $(A\cup B)\times(C\cup D) \neq (A\times C)\cup(B\times D)$. Geométricamente: el lado izquierdo es un rectángulo completo y el derecho es la unión de dos rectángulos, que deja esquinas sin cubrir.</p>
+    </div>
+
+    <hr>
+
+    <h2 id="s34"><span class="kicker">Sección 3.4</span>Familias de conjuntos</h2>
+
+    <h3>La motivación</h3>
+    <p>Queremos unir e intersecar <strong>más de dos conjuntos</strong> — incluso infinitos. La reformulación clave, para dos conjuntos:</p>
+    <ul>
+      <li>$A_1 \cup A_2$ = elementos $x$ tales que $x \in A_i$ <strong>para algún</strong> $i \in \{1,2\}$</li>
+      <li>$A_1 \cap A_2$ = elementos $x$ tales que $x \in A_i$ <strong>para todo</strong> $i \in \{1,2\}$</li>
+    </ul>
+    <p>Hemos reemplazado el «o» por un <strong>cuantificador existencial</strong> y el «y» por uno <strong>universal</strong>. Y los cuantificadores no tienen problema con conjuntos infinitos:</p>
+    $$\bigcup_{i=1}^{\infty} A_i = \{x \mid x \in A_n \text{ para algún } n \in \mathbb{N}\}$$
+    $$\bigcap_{i=1}^{\infty} A_i = \{x \mid x \in A_n \text{ para todo } n \in \mathbb{N}\}$$
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.4.1</span>
+      <p><strong>(1)</strong> Para cada $i \in \mathbb{N}$, sea $B_i = \{1,2,\dots,3i\}$. Entonces</p>
+      $$\bigcup_{i=1}^\infty B_i = \mathbb{N}, \qquad \bigcap_{i=1}^\infty B_i = \{1,2,3\}$$
+      <p>Los $B_i$ crecen ($B_1 = \{1,2,3\}$, $B_2 = \{1,\dots,6\}$, …), así que la unión los agota todos y la intersección es el más pequeño, $B_1$.</p>
+      <p><strong>(2)</strong> Para cada $k \in \mathbb{N}$, sea $F_k = \left(\tfrac{1}{k},\, 8+\tfrac{3}{k}\right)$. Entonces</p>
+      $$\bigcup_{k=1}^\infty F_k = (0,11), \qquad \bigcap_{k=1}^\infty F_k = (1,8]$$
+      <p>Verifica esto con cuidado: es el ejemplo más instructivo de la sección. Observa cómo cambian los extremos: $\tfrac1k \to 0$ pero nunca lo alcanza, por eso $0$ queda fuera de la unión; en cambio $8 + \tfrac3k \to 8$ por arriba y $8$ <strong>sí</strong> está en todos los $F_k$, por eso la intersección es cerrada en 8.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.4.2 — Familia de conjuntos</span>
+      <p>Sea $\mathcal{A}$ un conjunto. $\mathcal{A}$ es una <strong>familia de conjuntos</strong> si todos sus elementos son conjuntos.</p>
+      <p>La familia $\mathcal{A}$ está <strong>indexada por $I$</strong>, denotado $\mathcal{A} = \{A_i\}_{i\in I}$, si existe un conjunto no vacío $I$ tal que hay un elemento $A_i \in \mathcal{A}$ para cada $i \in I$, y todo elemento de $\mathcal{A}$ es igual a $A_i$ para <strong>exactamente un</strong> $i \in I$.</p>
+    </div>
+
+    <p>El conjunto vacío <strong>es</strong> una familia de conjuntos (vacuamente). Convención del libro: si no se necesita indexar, «sea $\mathcal{A}$ una familia de conjuntos»; si sí, «sea $I$ un conjunto y sea $\{A_i\}_{i\in I}$ una familia indexada por $I$».</p>
+
+    <div class="note">
+      <p><strong>¿Por qué mantener la versión no indexada?</strong> Porque hay familias que no tienen forma natural de indexarse. Ejemplo: dado un conjunto $A$, la familia de todos sus subconjuntos finitos, $\mathcal{A} = \{B \mid B \subseteq A \text{ y } B \text{ es finito}\}$. Técnicamente uno <em>podría</em> indexar cualquier familia por sí misma ($\mathcal{A} = \{A_X\}_{X\in\mathcal{A}}$, «autoindexada»), pero en la práctica eso no ayuda en nada.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.4.3 — Unión e intersección generalizadas</span>
+      <p>Sea $\mathcal{A}$ una familia de conjuntos.</p>
+      <p><strong>Unión:</strong> si $\mathcal{A}\neq\emptyset$, &nbsp;$\bigcup_{X\in\mathcal{A}}X = \{x \mid x \in A \text{ para algún } A \in \mathcal{A}\}$; si $\mathcal{A}=\emptyset$, entonces $\bigcup_{X\in\mathcal{A}}X = \emptyset$.</p>
+      <p><strong>Intersección:</strong> si $\mathcal{A}\neq\emptyset$, &nbsp;$\bigcap_{X\in\mathcal{A}}X = \{x \mid x \in A \text{ para todo } A \in \mathcal{A}\}$; si $\mathcal{A}=\emptyset$, la intersección <strong>no está definida</strong>.</p>
+      <p>Versión indexada:</p>
+      $$\bigcup_{i\in I}A_i = \{x \mid x \in A_i \text{ para algún } i \in I\}, \qquad \bigcap_{i\in I}A_i = \{x \mid x \in A_i \text{ para todo } i\in I\}$$
+    </div>
+
+    <div class="warn">
+      <p><strong>Asimetría importante:</strong> la unión de la familia vacía es $\emptyset$; la intersección de la familia vacía <strong>no se define</strong>. Razón intuitiva: «todo elemento de la familia vacía contiene a $x$» sería vacuamente verdadero para <em>cualquier</em> $x$, lo que daría «el conjunto de todas las cosas» — que, como veremos en 3.5, no existe.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.4.4</span>
+      <p><strong>(1)</strong> Para cada $x \in \mathbb{R}$, sea $C_x = [-2, \operatorname{sen} x]$. Entonces</p>
+      $$\bigcup_{x\in\mathbb{R}}C_x = [-2,1], \qquad \bigcap_{x\in\mathbb{R}}C_x = [-2,-1]$$
+      <p>El seno alcanza su máximo $1$ y su mínimo $-1$: la unión llega hasta el máximo, la intersección se detiene en el mínimo. Nota que el conjunto de índices aquí es $\mathbb{R}$ — los índices no tienen que ser números de conteo.</p>
+      <p><strong>(2)</strong> Sea $\mathcal{F}$ la familia de todos los subconjuntos finitos de $\mathbb{N}$. Entonces $\bigcup_{X\in\mathcal{F}}X = \mathbb{N}$ y $\bigcap_{X\in\mathcal{F}}X = \emptyset$. Todo natural pertenece a algún subconjunto finito (por ejemplo $\{n\}$), pero $\emptyset$ mismo está en $\mathcal{F}$, así que la intersección es vacía.</p>
+    </div>
+
+    <div class="block thm">
+      <span class="tag">Teorema 3.4.5 — Propiedades de familias</span>
+      <p>Sea $I$ no vacío, $\{A_i\}_{i\in I}$ una familia indexada y $B$ un conjunto.</p>
+      <div class="tw"><table>
+        <thead><tr><th>#</th><th>Versión indexada</th><th>Nombre</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>$\bigcap_{i\in I}A_i \subseteq A_k$ para todo $k\in I$. Si $B \subseteq A_k$ para todo $k$, entonces $B \subseteq \bigcap_{i\in I}A_i$</td><td></td></tr>
+          <tr><td>2</td><td>$A_k \subseteq \bigcup_{i\in I}A_i$ para todo $k$. Si $A_k \subseteq B$ para todo $k$, entonces $\bigcup_{i\in I}A_i \subseteq B$</td><td></td></tr>
+          <tr><td>3</td><td>$B \cap \left(\bigcup_{i\in I}A_i\right) = \bigcup_{i\in I}(B\cap A_i)$</td><td>Distributiva</td></tr>
+          <tr><td>4</td><td>$B \cup \left(\bigcap_{i\in I}A_i\right) = \bigcap_{i\in I}(B\cup A_i)$</td><td>Distributiva</td></tr>
+          <tr><td>5</td><td>$B - \left(\bigcup_{i\in I}A_i\right) = \bigcap_{i\in I}(B-A_i)$</td><td>De Morgan</td></tr>
+          <tr><td>6</td><td>$B - \left(\bigcap_{i\in I}A_i\right) = \bigcup_{i\in I}(B-A_i)$</td><td>De Morgan</td></tr>
+        </tbody>
+      </table></div>
+      <p>El libro enuncia el teorema también en versión no indexada, sustituyendo $A_k$ por «$A$ para todo $A\in\mathcal{A}$» y los subíndices por $X \in \mathcal{A}$.</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Interpretación de (1) y (2)</strong> — lo más importante del teorema: $\bigcap_{i\in I}A_i$ es el <strong>mayor</strong> conjunto contenido en todos los $A_i$, y $\bigcup_{i\in I}A_i$ es el <strong>menor</strong> conjunto que contiene a todos los $A_i$. Es la generalización exacta del Teorema 3.3.3 (1) y (2).</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Demostración de (3)</span>
+      <p><em>($\subseteq$)</em> Sea $x \in B \cap \left(\bigcup_{i\in I}A_i\right)$. Entonces $x \in B$ y $x \in \bigcup_{i\in I}A_i$. De lo segundo: $x \in A_k$ para algún $k \in I$. Luego $x \in B \cap A_k$, y por la parte (2), $x \in \bigcup_{i\in I}(B\cap A_i)$.</p>
+      <p><em>($\supseteq$)</em> Sea $y \in \bigcup_{i\in I}(B\cap A_i)$. Entonces $y \in B \cap A_j$ para algún $j \in I$, luego $y \in B$ y $y \in A_j$. Por la parte (2), $y \in \bigcup_{i\in I}A_i$, y por lo tanto $y \in B \cap \left(\bigcup_{i\in I}A_i\right)$. ∎</p>
+      <p><strong>Patrón general:</strong> «pertenece a la unión» se traduce como «existe un índice $k$ tal que…»; «pertenece a la intersección» como «para todo índice $k$…». Todo lo demás es manipulación de cuantificadores.</p>
+    </div>
+
+    <hr>
+
+    <h2 id="s35"><span class="kicker">Sección 3.5</span>Axiomas para la teoría de conjuntos</h2>
+
+    <h3 id="russell">La paradoja de Russell</h3>
+    <p>Supongamos que pudiéramos formar <strong>el conjunto de todos los conjuntos</strong>; llamémoslo $S$. Nótese que entonces $S \in S$. Definamos</p>
+    $$T = \{A \in S \mid A \notin A\}$$
+    <p>es decir, el conjunto de los conjuntos que no se pertenecen a sí mismos. Preguntemos: <strong>¿$T \in T$?</strong></p>
+    <ul>
+      <li>Si $T \notin T$, entonces $T$ cumple la condición que define a $T$, luego $T \in T$.</li>
+      <li>Si $T \in T$, entonces $T$ cumple $T \notin T$, luego $T \notin T$.</li>
+    </ul>
+    <p><strong>Contradicción en ambos casos.</strong> El problema de fondo: estamos usando el conjunto de todos los conjuntos, y más en general, hay que tener mucho más cuidado con cómo cuantificamos sobre conjuntos.</p>
+    <p>En la práctica matemática cotidiana estos problemas no aparecen, porque nadie usa el conjunto de todos los conjuntos. Pero para tratar la teoría rigurosamente hace falta esta sutileza.</p>
+
+    <h3 id="zf">Los axiomas de Zermelo–Fraenkel (ZF)</h3>
+    <p>El primer esquema axiomático fue de <strong>Zermelo (1908)</strong>, modificado después hasta lo que hoy son los axiomas de Zermelo–Fraenkel, abreviados <strong>ZF</strong>.</p>
+
+    <div class="note">
+      <p><strong>1. En ZF, TODO es un conjunto.</strong> Informalmente distinguimos entre conjuntos y elementos; en ZF esa distinción desaparece. Los números también son conjuntos: «1» y «2» denotan $\{\emptyset\}$ y $\{\emptyset,\{\emptyset\}\}$. La pertenencia $\in$ es entonces una relación entre conjuntos. Consecuencia: el concepto de «familia de conjuntos» de la Sección 3.4 se vuelve innecesario, porque todo conjunto no vacío es una familia de conjuntos.</p>
+      <p><strong>2. La presentación es informal.</strong> Los axiomas ZF se formulan propiamente en lógica simbólica. El libro los escribe en lenguaje natural; solo el primero se muestra en notación lógica, para demostrar que se puede.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma de Extensionalidad</span>
+      <p>Sean $x$, $y$ conjuntos. Si $x$ y $y$ tienen los mismos elementos, entonces $x = y$.</p>
+      $$\forall x \forall y\,(\forall z\,(z \in x \leftrightarrow z \in y) \to x = y)$$
+      <p>Es simplemente otra forma de enunciar la Definición 3.2.5.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma del Conjunto Vacío</span>
+      <p>Existe un conjunto $z$ tal que $x \notin z$ para todo conjunto $x$.</p>
+      <p>También llamado Axioma del Conjunto Nulo. Por Extensionalidad ese $z$ es único, y se denota $\emptyset$.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma de Pares</span>
+      <p>Sean $x$, $y$ conjuntos. Existe un conjunto $z$ tal que $w \in z$ si y solo si $w = x$ o $w = y$.</p>
+      <p>Ese $z$ es único y se denota $\{x,y\}$. No se exige $x \neq y$; abreviamos $\{x,x\}$ como $\{x\}$.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma de Unión</span>
+      <p>Sea $x$ un conjunto. Existe un conjunto $z$ tal que $w \in z$ si y solo si existe algún $y \in x$ con $w \in y$.</p>
+      <p>Se denota $\cup x$. Como en ZF todo conjunto es una familia de conjuntos, $\cup x$ es lo mismo que $\bigcup_{y\in x}y$ de la Sección 3.4.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma del Conjunto Potencia</span>
+      <p>Sea $x$ un conjunto. Existe un conjunto $z$ tal que $w \in z$ si y solo si $w \subseteq x$.</p>
+      <p>«$w \subseteq x$» es solo una abreviatura de «$y \in w$ implica $y \in x$», así que es válido usar esa notación aquí. Ese $z$ es $\mathcal{P}(x)$.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma de Regularidad</span>
+      <p>Sea $x$ un conjunto con $x \neq \emptyset$. Entonces existe algún $y \in x$ tal que $x \cap y = \emptyset$.</p>
+      <p>También llamado Axioma de Fundación. Sirve para descartar situaciones problemáticas como un conjunto no vacío con $x \in x$: si existiera tal $x$, el conjunto $\{x\}$ violaría este axioma.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma de Selección</span>
+      <p>Sea $P(t)$ una propiedad lógica de conjuntos con una variable libre $t$, formulable en ZF. Sea $x$ un conjunto. Entonces existe un conjunto $z$ tal que $y \in z$ si y solo si $y \in x$ y $P(y)$ es verdadera.</p>
+      <p>También llamado Axioma de Especificación, de Comprensión o de Separación. Se denota $\{y \in x \mid P(y)\}$.</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Este es el axioma clave contra la paradoja de Russell.</strong> Dice que podemos tomar un conjunto <em>ya existente</em> y formar el subconjunto de los elementos que cumplen una propiedad. <strong>NO</strong> permite definir un conjunto por una propiedad sin especificar de qué conjunto salen los elementos.</p>
+    </div>
+
+    <div class="warn">
+      <p><strong>Confesión del autor.</strong> La Definición 3.4.3, tal como está escrita, <strong>no es válida</strong> bajo el Axioma de Selección, porque no especifica a qué conjunto pertenece $x$. Tampoco se arregla escribiendo «sea $S$ el conjunto de todos los conjuntos», porque ese conjunto no existe. El autor reconoce que usó una definición técnicamente inválida, pero que transmite la idea intuitiva correcta; ZF permite tratar unión e intersección rigurosamente y funciona igual.</p>
+      <p><strong>Asimetría entre unión e intersección en ZF:</strong> la capacidad de tomar uniones se postula axiomáticamente. La de tomar intersecciones se <em>deduce</em>: si $x$ es no vacío, se define $\bigcap_{z\in x}z = \{y \in \cup x \mid y \in z \text{ para todo } z \in x\}$, válido por el Axioma de Selección — aquí sí especificamos el conjunto ambiente, $\cup x$. <strong>Esto explica por qué la intersección de la familia vacía no está definida.</strong></p>
+    </div>
+
+    <p><strong>Esquema de axiomas.</strong> «Axioma de Selección» no es un axioma sino una <em>colección</em>, uno por cada propiedad $P(t)$. Esto se llama <em>axiom schema</em>. No se pueden fusionar en uno solo porque en ZF no es posible cuantificar sobre todas las propiedades posibles.</p>
+
+    <div class="block def">
+      <span class="tag">Axioma del Infinito</span>
+      <p>Existe un conjunto $z$ tal que $\emptyset \in z$, y si $x \in z$ entonces $x \cup \{x\} \in z$.</p>
+      <p>Ese $z$ no es necesariamente único. Informalmente, contiene los conjuntos</p>
+      $$\emptyset,\quad \{\emptyset\},\quad \{\emptyset,\{\emptyset\}\},\quad \{\emptyset,\{\emptyset\},\{\emptyset,\{\emptyset\}\}\},\quad \dots$$
+      <p>Intuitivamente cualquier $z$ así debe ser infinito — de ahí el nombre.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma de Reemplazo</span>
+      <p>Sea $F(s,t)$ una propiedad funcional de conjuntos con dos variables libres, formulable en ZF. Sea $x$ un conjunto. Entonces existe un conjunto $z$ tal que $y \in z$ si y solo si existe algún $w \in x$ con $F(w,y)$ verdadera.</p>
+      <p>También es un esquema de axiomas. Una «propiedad funcional» es la forma formal de describir lo que normalmente llamamos una <strong>función</strong> (Capítulo 4). Se usa principalmente para tecnicismos en teoría de conjuntos avanzada.</p>
+    </div>
+
+    <h3>Construcción de los números naturales</h3>
+    <p>Los conjuntos de la lista anterior deben recordarte a $0,\ 0+1,\ 0+1+1,\dots$ — intuitivamente, los enteros no negativos. Esquema:</p>
+    <ol>
+      <li>El Axioma del Infinito garantiza al menos un conjunto $w$ que contiene esos «números» (aunque $w$ no es único).</li>
+      <li>Se toma $z$ = la intersección de todos los subconjuntos de $w$ que contienen esos números; $z$ resulta ser el <strong>mínimo</strong> conjunto de ese tipo.</li>
+      <li>Con algo de trabajo se ve que $z$ se comporta como esperamos de $\mathbb{N}\cup\{0\}$.</li>
+      <li><strong>La elección de $w$ resulta ser irrelevante.</strong></li>
+    </ol>
+    <p>Una vez definidos los naturales, se construyen $\mathbb{Z}$, $\mathbb{Q}$ y $\mathbb{R}$. Y como el análisis real y la geometría euclidiana se basan en las propiedades de $\mathbb{R}$: aceptando ZF, tenemos a disposición todos los sistemas numéricos familiares y muchas ramas de la matemática, construidos con rigor completo.</p>
+
+    <h3>Tres preguntas sobre ZF</h3>
+    <p><strong>¿Por qué estos axiomas y no otros?</strong> Sería posible usar variantes. Se eligieron estos porque son cómodos de usar y porque bastan para todo lo que hace falta hacer con conjuntos.</p>
+    <p><strong>¿Hay redundancia? Sí.</strong> El Axioma del Infinito junto con el de Selección implican el del Conjunto Vacío: Infinito garantiza que existe algún conjunto $w$, y Selección permite definir $z = \{x \in w \mid x \neq x\}$, que es vacío. Aun así se conserva porque se usa constantemente. Similarmente, el Axioma de Selección puede demostrarse a partir del de Reemplazo más los otros; se conservan ambos, Selección por su utilidad práctica y Reemplazo por los tecnicismos que necesita.</p>
+    <p><strong>¿Son consistentes? No lo sabemos con certeza.</strong> Si alguien deduce una contradicción, sabemos que el sistema es inconsistente; pero si nadie ha encontrado una, no podemos distinguir entre «no existe» y «existe pero aún no la han hallado». Lo que sí sabemos: ZF fue diseñado para eliminar los problemas conocidos, y la paradoja de Russell queda bloqueada por partida doble — $S \in S$ es imposible por Regularidad, y sin la existencia de $S$ no se puede usar Selección para definir $T$.</p>
+
+    <div class="note">
+      <p><strong>Consejo del autor:</strong> la mayoría de matemáticos que no son lógicos usan la teoría de conjuntos de manera informal e intuitiva, aceptan que funciona y no se preocupan más. Esa actitud es la recomendada. Aun así, vale la pena saber que ese sistema axiomático existe y grosso modo qué dice.</p>
+    </div>
+
+    <h3 id="ac">El Axioma de Elección</h3>
+    <p>A diferencia de los axiomas ZF —que casi no generan controversia y se usan implícitamente—, <strong>AC es considerado controversial por algunos</strong>, y cuando se usa, se usa mucho más explícitamente. Notación: <strong>AC</strong> = <em>Axiom of Choice</em>; <strong>ZFC</strong> = ZF + AC.</p>
+    <p><strong>La idea intuitiva:</strong> si tenemos una familia de conjuntos no vacíos, podemos elegir simultáneamente un elemento de cada uno. ¿Por qué hace falta un axioma para algo tan obvio?</p>
+    <div class="tw"><table>
+      <thead><tr><th>Caso</th><th>¿Problema?</th></tr></thead>
+      <tbody>
+        <tr><td>Un solo conjunto no vacío</td><td>Ninguno. Decimos «sea $A$ no vacío y sea $a \in A$» todo el tiempo.</td></tr>
+        <tr><td>Familia <strong>finita</strong></td><td>Ninguno. Elegimos del primero, del segundo, etc., y terminamos en un número finito de pasos.</td></tr>
+        <tr><td>Familia <strong>infinita</strong></td><td>Aquí está el problema.</td></tr>
+      </tbody>
+    </table></div>
+    <p>No podemos suponer que sea posible realizar un número infinito de pasos uno a uno y que el proceso termine. Si queremos elegir un elemento de cada conjunto de una familia infinita, <strong>las elecciones deben hacerse simultáneamente</strong>. Esa capacidad no se deduce de los otros axiomas, así que hay que postularla.</p>
+
+    <div class="block def">
+      <span class="tag">Axioma de Elección</span>
+      <p>Sea $x$ un conjunto. Supongamos que si $y, w \in x$, entonces $y \neq \emptyset$ y $y \cap w = \emptyset$. Entonces existe un conjunto $z$ tal que si $y \in x$, entonces $y \cap z$ contiene exactamente un elemento.</p>
+      <p>El conjunto $z$ contiene un elemento de cada conjunto en $x$, como si $z$ los hubiera «elegido» — de ahí el nombre. Las hipótesis garantizan que todo conjunto de $x$ tiene algo que elegir ($y \neq \emptyset$) y que nada en $z$ podría pertenecer a dos conjuntos distintos de $x$ ($y \cap w = \emptyset$).</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Definición 3.5.1 — Disjuntos dos a dos</span>
+      <p>Sea $I$ no vacío y $\{A_i\}_{i\in I}$ una familia indexada. La familia es <strong>disjunta dos a dos</strong> (<em>pairwise disjoint</em>) si $i,j \in I$ e $i \neq j$ implican $A_i \cap A_j = \emptyset$.</p>
+    </div>
+
+    <div class="block thm">
+      <span class="tag">Axioma 3.5.2 — AC para familias disjuntas dos a dos</span>
+      <p>Sea $I$ no vacío y $\{A_i\}_{i\in I}$ una familia de conjuntos <strong>no vacíos</strong> indexada por $I$. Supongamos que $\{A_i\}_{i\in I}$ es disjunta dos a dos. Entonces existe una familia $\{C_i\}_{i\in I}$ tal que $C_i \subseteq A_i$ y $C_i$ tiene <strong>exactamente un elemento</strong> para todo $i \in I$.</p>
+    </div>
+
+    <div class="block thm">
+      <span class="tag">Teorema 3.5.3 — AC sin la hipótesis de disjuntos</span>
+      <p>Sea $I$ no vacío y $\{A_i\}_{i\in I}$ una familia de conjuntos no vacíos indexada por $I$. Entonces existe una familia $\{C_i\}_{i\in I}$ tal que $C_i \subseteq A_i$ y $C_i$ tiene exactamente un elemento para todo $i \in I$.</p>
+      <p>Se deduce del Axioma 3.5.2 (Ejercicio 3.5.2). <strong>Esta es la versión que se usa habitualmente.</strong></p>
+    </div>
+
+    <div class="note">
+      <p><strong>Cuándo hace falta AC — el ejemplo de Russell.</strong> AC debe usarse solo cuando no hay manera de evitarlo: cuando necesitamos elegir un elemento de cada conjunto de una familia no vacía y <em>no existe un procedimiento explícito</em> para hacerlo.</p>
+      <p>Bertrand Russell lo ilustró así: un millonario posee una cantidad infinita de <strong>pares de botas</strong> y la misma cantidad de <strong>pares de medias</strong>.</p>
+      <ul>
+        <li><strong>Botas:</strong> puede prescribir un método explícito — «tomo la izquierda de cada par». No hace falta AC.</li>
+        <li><strong>Medias:</strong> las dos medias de un par son <em>indistinguibles</em>, así que no hay forma de prescribir un método. Hay que hacer una elección arbitraria. Ahí sí se usa AC.</li>
+      </ul>
+      <p>Ejemplo matemático: dada una familia $\{[a_i,b_i]\}_{i\in I}$ de intervalos cerrados acotados en $\mathbb{R}$, no necesitamos AC para elegir un elemento de cada uno: podemos tomar el menor elemento de cada intervalo, que es $a_i$. Hay regla explícita.</p>
+    </div>
+
+    <p><strong>La independencia de AC.</strong> Algunos matemáticos no aceptan AC. Resulta que AC es <strong>independiente</strong> de los demás axiomas de ZF — puede aceptarse o rechazarse sin tocar el resto. Resultado debido en parte a <strong>Kurt Gödel (1938)</strong> y en parte a <strong>Paul Cohen (1963)</strong>: si ZF es consistente, entonces también lo son ZF + AC <em>y</em> ZF + ¬AC.</p>
+    <p>El autor, y la mayoría de matemáticos, no tienen reparos en usar AC. Pero como algunos sí los tienen, <strong>este axioma siempre debe mencionarse explícitamente cuando se usa</strong>.</p>
+
+    <h3 id="zorn">El Lema de Zorn</h3>
+    <p>Un hecho técnico sobre conjuntos, <strong>equivalente al Axioma de Elección</strong>.</p>
+
+    <div class="block def">
+      <span class="tag">Definición 3.5.4</span>
+      <p>Sea $\mathcal{P}$ una familia no vacía de conjuntos.</p>
+      <p><strong>1.</strong> Sea $M \in \mathcal{P}$. El conjunto $M$ es un <strong>elemento maximal</strong> de $\mathcal{P}$ si no existe $Q \in \mathcal{P}$ tal que $M \subsetneq Q$.</p>
+      <p><strong>2.</strong> Sea $\mathcal{C} \subseteq \mathcal{P}$. La familia $\mathcal{C}$ es una <strong>cadena</strong> si $A,B \in \mathcal{C}$ implica $A \subseteq B$ o $A \supseteq B$.</p>
+    </div>
+
+    <p><strong>Intuición de cadena:</strong> un subconjunto de $\mathcal{P}$ cuyos elementos pueden alinearse en orden de inclusión. Cualesquiera dos son comparables.</p>
+
+    <div class="warn">
+      <p><strong>Maximal ≠ máximo.</strong> Un elemento maximal no tiene por qué contener a todos los demás. Solo es uno que <strong>no es subconjunto propio de ningún otro</strong> elemento de la familia. Consecuencia: una familia puede tener varios elementos maximales.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo 3.5.5</span>
+      <p><strong>(1)</strong> Sea $\mathcal{P} = \{\{1\},\{1,2\},\{1,2,3\},\{5\}\}$.</p>
+      <p><em>Elementos maximales:</em> $\{1,2,3\}$ y $\{5\}$. <strong>Dos.</strong> ($\{5\}$ es maximal aunque sea el más pequeño: no está contenido propiamente en ningún otro elemento de la familia.)</p>
+      <p><em>Cadenas:</em> hay nueve.</p>
+      $$\emptyset,\ \{\{1\}\},\ \{\{1,2\}\},\ \{\{1,2,3\}\},\ \{\{5\}\},$$
+      $$\{\{1\},\{1,2\}\},\ \{\{1\},\{1,2,3\}\},\ \{\{1,2\},\{1,2,3\}\},\ \{\{1\},\{1,2\},\{1,2,3\}\}$$
+      <p>Nótese que $\emptyset$ cuenta como cadena, y que ninguna cadena puede contener $\{5\}$ junto con otro elemento, porque $\{5\}$ no es comparable con ninguno.</p>
+      <p><strong>(2)</strong> Sea $\mathcal{Q} = \mathcal{P}(\mathbb{N})$, sea $\mathcal{S}$ la familia de todos los subconjuntos <strong>finitos</strong> de $\mathbb{N}$, y sea $\mathcal{C} = \{\{2\},\{2,4\},\{2,4,6\},\dots\}$, que es una cadena en ambas. Claramente $\bigcup_{C\in\mathcal{C}}C = \{2,4,6,\dots\}$.</p>
+      <div class="tw"><table>
+        <thead><tr><th></th><th>$\mathcal{Q}=\mathcal{P}(\mathbb{N})$</th><th>$\mathcal{S}$ = subconjuntos finitos</th></tr></thead>
+        <tbody>
+          <tr><td>¿$\bigcup_{C\in\mathcal{C}}C$ está en la familia?</td><td>Sí</td><td>No (el conjunto de pares es infinito)</td></tr>
+          <tr><td>¿Tiene elemento maximal?</td><td>Sí, $\mathbb{N}$</td><td>No (todo subconjunto finito es subconjunto propio de otros finitos)</td></tr>
+        </tbody>
+      </table></div>
+      <p>Las dos columnas coinciden. Y eso no es casualidad — es precisamente lo que dice el Lema de Zorn.</p>
+    </div>
+
+    <div class="block thm">
+      <span class="tag">Teorema 3.5.6 — Lema de Zorn</span>
+      <p>Sea $\mathcal{P}$ una familia no vacía de conjuntos. Supongamos que para cada cadena $\mathcal{C}$ en $\mathcal{P}$, el conjunto $\bigcup_{C\in\mathcal{C}}C$ está en $\mathcal{P}$. Entonces $\mathcal{P}$ tiene un elemento maximal.</p>
+      <p>En palabras: si una familia contiene la unión de los elementos de cada una de sus cadenas, entonces tiene un elemento maximal.</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Esbozo de la demostración</span>
+      <p>Es por contradicción y usa AC. Vale la pena seguir la estructura:</p>
+      <ol>
+        <li><strong>Supongamos que $\mathcal{P}$ no tiene elemento maximal.</strong> Entonces para cada $A \in \mathcal{P}$, el conjunto $T_A = \{Q \in \mathcal{P} \mid A \subsetneq Q\}$ es no vacío (siempre hay algo estrictamente mayor).</li>
+        <li><strong>Aplicamos AC</strong> (Teorema 3.5.3) a la familia $\{T_A\}_{A\in\mathcal{P}}$: obtenemos $\{F_A\}$ con $F_A \subseteq T_A$ y cada $F_A$ con exactamente un elemento. Llamemos $S_A$ a ese elemento. Entonces $S_A \in \mathcal{P}$ y $A \subsetneq S_A$ para todo $A$. Es decir: AC nos da una manera de asociar a cada conjunto uno estrictamente mayor.</li>
+        <li><strong>Definición auxiliar:</strong> una familia $\mathcal{R}\subseteq\mathcal{P}$ es <em>cerrada por cadenas</em> si para cada cadena $\mathcal{C}$ en $\mathcal{R}$, se tiene $\bigcup_{C\in\mathcal{C}}C \in \mathcal{R}$. Por hipótesis, $\mathcal{P}$ misma lo es.</li>
+        <li>Sea $\mathcal{M}$ la <strong>intersección de todas las familias cerradas por cadenas</strong> contenidas en $\mathcal{P}$. Se verifica que $\mathcal{M}$ también es cerrada por cadenas.</li>
+        <li>$\emptyset$ es una cadena en $\mathcal{M}$ y $\bigcup_{C\in\emptyset}C = \emptyset$, luego $\emptyset \in \mathcal{M}$, y por lo tanto $\mathcal{M} \neq \emptyset$.</li>
+        <li><strong>El paso clave.</strong> Sea $A \in \mathcal{P}$ y definamos $\mathcal{A} = \{X \in \mathcal{P} \mid S_A \subseteq X\}$. Se verifica que $\mathcal{A}$ es cerrada por cadenas, luego $\mathcal{M}\subseteq\mathcal{A}$. Pero $A \notin \mathcal{A}$, porque eso significaría $S_A \subseteq A$, contradiciendo $A \subsetneq S_A$. Por lo tanto $A \notin \mathcal{M}$.</li>
+        <li>Como $\mathcal{M}\subseteq\mathcal{P}$ y ningún $A \in \mathcal{P}$ está en $\mathcal{M}$, deducimos $\mathcal{M}=\emptyset$ — <strong>contradiciendo el paso 5</strong>.</li>
+      </ol>
+      <p>Concluimos que $\mathcal{P}$ debe tener un elemento maximal. ∎</p>
+    </div>
+
+    <hr>
+
+    <h2 id="s3err">Errores frecuentes</h2>
+    <ol>
+      <li><strong>Confundir $\in$ con $\subseteq$.</strong> El error número uno. $a \in \{a,b\}$ es verdadero, pero $a \subseteq \{a,b\}$ es falso.</li>
+      <li><strong>Creer que $\mathcal{P}(\emptyset) = \emptyset$.</strong> Es $\{\emptyset\}$, que tiene un elemento.</li>
+      <li><strong>Olvidar una de las dos contenciones</strong> al probar igualdad de conjuntos.</li>
+      <li><strong>Usar un diagrama de Venn como demostración.</strong> Es solo ayuda visual.</li>
+      <li><strong>Creer que $A \not\subseteq B$ significa que no comparten elementos.</strong> Solo significa que <em>algún</em> elemento de $A$ no está en $B$.</li>
+      <li><strong>Confundir maximal con máximo.</strong> Maximal = no está contenido propiamente en otro. Máximo = contiene a todos los demás.</li>
+      <li><strong>Escribir $[a,\infty]$.</strong> No existe: $\infty$ no es un número real.</li>
+      <li><strong>Suponer $A \times B = B \times A$.</strong> Falso salvo casos triviales.</li>
+      <li><strong>Aplicar el análogo con $\cup$ del Teorema 3.3.12 (5).</strong> El Ejemplo 3.3.13 muestra que es falso.</li>
+      <li><strong>Definir un conjunto sin conjunto ambiente:</strong> $\{x \mid P(x)\}$ sin decir de dónde sale $x$ viola el Axioma de Selección y lleva a paradojas.</li>
+      <li><strong>Usar AC sin mencionarlo.</strong> Si lo usas, dilo explícitamente.</li>
+    </ol>
+
+    <h2 id="s3auto">Autoevaluación</h2>
+    <p>Si puedes responder esto sin mirar, dominas el capítulo.</p>
+
+    <div class="check" data-check>
+      <h4>3.1 — Fundamentos</h4>
+      <ul>
+        <li><input type="checkbox" id="c1"><label for="c1">¿Por qué son inevitables los axiomas y los términos no definidos?</label></li>
+        <li><input type="checkbox" id="c2"><label for="c2">¿Cuál fue el error de Euclides respecto de las definiciones?</label></li>
+      </ul>
+    </div>
+
+    <div class="check" data-check>
+      <h4>3.2 — Definiciones básicas</h4>
+      <ul>
+        <li><input type="checkbox" id="c3"><label for="c3">Enuncia la definición de $A \subseteq B$ y su negación.</label></li>
+        <li><input type="checkbox" id="c4"><label for="c4">Escribe el esqueleto de una demostración de $A \subseteq B$ y de $A = B$.</label></li>
+        <li><input type="checkbox" id="c5"><label for="c5">Da un conjunto $A$ y un objeto $x$ con $x \in A$ pero $x \not\subseteq A$, y otro con $x \subseteq A$ pero $x \notin A$.</label></li>
+        <li><input type="checkbox" id="c6"><label for="c6">¿Cuántos elementos tiene $\mathcal{P}(\mathcal{P}(\emptyset))$?</label></li>
+      </ul>
+    </div>
+
+    <div class="check" data-check>
+      <h4>3.3 — Operaciones</h4>
+      <ul>
+        <li><input type="checkbox" id="c7"><label for="c7">Enuncia las leyes distributivas y las de De Morgan.</label></li>
+        <li><input type="checkbox" id="c8"><label for="c8">Demuestra $A \cap (B \cup C) = (A\cap B)\cup(A\cap C)$ sin mirar.</label></li>
+        <li><input type="checkbox" id="c9"><label for="c9">¿Por qué $(A\cup B)\times(C\cup D) \neq (A\times C)\cup(B\times D)$?</label></li>
+      </ul>
+    </div>
+
+    <div class="check" data-check>
+      <h4>3.4 — Familias</h4>
+      <ul>
+        <li><input type="checkbox" id="c10"><label for="c10">Traduce «$x \in \bigcup_{i\in I}A_i$» y «$x \in \bigcap_{i\in I}A_i$» a lenguaje de cuantificadores.</label></li>
+        <li><input type="checkbox" id="c11"><label for="c11">¿Por qué la intersección de la familia vacía no está definida?</label></li>
+        <li><input type="checkbox" id="c12"><label for="c12">Calcula $\bigcup_k$ y $\bigcap_k$ de $F_k = (1/k,\ 8+3/k)$ y justifica los extremos.</label></li>
+      </ul>
+    </div>
+
+    <div class="check" data-check>
+      <h4>3.5 — Axiomas</h4>
+      <ul>
+        <li><input type="checkbox" id="c13"><label for="c13">Reconstruye la paradoja de Russell.</label></li>
+        <li><input type="checkbox" id="c14"><label for="c14">¿Qué axioma la bloquea y cómo?</label></li>
+        <li><input type="checkbox" id="c15"><label for="c15">¿En qué se diferencia el Axioma de Unión del tratamiento de la intersección en ZF?</label></li>
+        <li><input type="checkbox" id="c16"><label for="c16">Explica el ejemplo de las botas y las medias.</label></li>
+        <li><input type="checkbox" id="c17"><label for="c17">Enuncia el Lema de Zorn y da una familia sin elemento maximal.</label></li>
+      </ul>
+    </div>
+
+    </div><!-- /prose -->
+  </section>
+
+  <!-- ============================ MICROECONOMÍA ============================ -->
+  <section class="track" id="track-micro" role="tabpanel" aria-labelledby="tab-micro">
+
+    <div class="calc">
+      <h3>Verificador de WARP</h3>
+      <p class="lede">Introduce dos observaciones (precios y canasta elegida) y comprueba si el Axioma Débil se cumple. Separa las componentes con comas.</p>
+      <div class="obs-grid">
+        <div class="obs">
+          <h4>Observación 0</h4>
+          <div class="fld"><label for="p0">p⁰</label><input id="p0" value="1, 1"></div>
+          <div class="fld"><label for="x0">x⁰</label><input id="x0" value="6, 4"></div>
+        </div>
+        <div class="obs">
+          <h4>Observación 1</h4>
+          <div class="fld"><label for="p1">p¹</label><input id="p1" value="2, 1"></div>
+          <div class="fld"><label for="x1">x¹</label><input id="x1" value="2, 8"></div>
+        </div>
+      </div>
+      <div class="calc-actions">
+        <button class="btn" id="warpRun">Comprobar</button>
+        <button class="btn ghost" id="warpLoadOk">Ejemplo consistente</button>
+        <button class="btn ghost" id="warpLoadBad">Ejemplo con violación</button>
+      </div>
+      <div id="warpOut"></div>
+    </div>
+
+    <div class="prose">
+
+    <h2 id="mnot"><span class="kicker">Referencia</span>Notación</h2>
+    <div class="tw"><table>
+      <thead><tr><th>Símbolo</th><th>Lectura</th></tr></thead>
+      <tbody>
+        <tr><td>$X$</td><td>conjunto de consumo; a partir de la mitad de §1.2 se fija $X = \mathbb{R}^n_+$</td></tr>
+        <tr><td>$x \succsim y$</td><td>«$x$ es al menos tan bueno como $y$»</td></tr>
+        <tr><td>$x \succ y$</td><td>«$x$ es estrictamente preferido a $y$»</td></tr>
+        <tr><td>$x \sim y$</td><td>«$x$ es indiferente a $y$»</td></tr>
+        <tr><td>$x \geq y$</td><td>$x_i \geq y_i$ para todo $i$ (al menos tanto de cada bien)</td></tr>
+        <tr><td>$x \gg y$</td><td>$x_i &gt; y_i$ para todo $i$ (estrictamente más de <strong>cada</strong> bien)</td></tr>
+        <tr><td>$B_\varepsilon(x^0)$</td><td>bola abierta de radio $\varepsilon$ centrada en $x^0$</td></tr>
+        <tr><td>$p \cdot x$</td><td>gasto: $\sum_i p_i x_i$</td></tr>
+      </tbody>
+    </table></div>
+    <div class="warn">
+      <p>Cuidado con $\geq$ frente a $\gg$: casi todos los errores de examen en el Axioma 4 vienen de confundirlos.</p>
+    </div>
+
+    <hr>
+
+    <h2 id="m121"><span class="kicker">Sección 1.2.1</span>Preferencias</h2>
+
+    <h3>El porqué histórico</h3>
+    <p>La sección abre con una idea metodológica que conviene tener clara antes de las matemáticas: la teoría moderna es una <strong>depuración</strong> de la clásica.</p>
+    <ul>
+      <li>La escuela utilitarista (Edgeworth, Mill) trataba la utilidad como una sustancia medible y comparable entre personas, y apoyaba la Ley de la Demanda en la «utilidad marginal decreciente» tomada como ley psicológica.</li>
+      <li>Pareto sospechó que la medición de la utilidad era prescindible; Slutsky construyó teoría de la demanda sin ella; Hicks mostró que la utilidad marginal decreciente no es ni necesaria ni suficiente para la Ley de la Demanda; Debreu completó la reducción a lo mínimo indispensable.</li>
+    </ul>
+    <div class="note">
+      <p><strong>Moraleja para el examen:</strong> hoy el objeto primitivo es la <em>relación de preferencia</em>, no la utilidad. La función de utilidad es un dispositivo de conveniencia que resume esa relación, y todo lo que dice es <strong>ordinal</strong>.</p>
+    </div>
+
+    <h3>El objeto primitivo</h3>
+    <p>Las preferencias se modelan como una <strong>relación binaria</strong> $\succsim$ definida sobre $X$. Que sea <em>binaria</em> es en sí una decisión sustantiva: solo se le exige al consumidor comparar planes <strong>de a dos</strong>. No se le pide que ordene simultáneamente todo el conjunto de consumo, ni que asigne números, ni que introspeccione intensidades.</p>
+
+    <h3 id="axiomas">Los axiomas</h3>
+
+    <div class="block def">
+      <span class="tag">Axioma 1 — Completitud</span>
+      <p>Para todo $x^1, x^2 \in X$: &nbsp;$x^1 \succsim x^2$ &nbsp;o&nbsp; $x^2 \succsim x^1$.</p>
+      <p>Formaliza la <strong>capacidad de comparar</strong>: el consumidor tiene el conocimiento y la habilidad de evaluar cualquier par. El «o» es inclusivo: pueden valer ambas, y eso es precisamente la indiferencia. <em>Lo que descarta:</em> la respuesta «no sé», «son incomparables».</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma 2 — Transitividad</span>
+      <p>Para todo $x^1,x^2,x^3 \in X$: si $x^1 \succsim x^2$ y $x^2 \succsim x^3$, entonces $x^1 \succsim x^3$.</p>
+      <p>Formaliza la <strong>consistencia</strong> de las comparaciones pareadas: los juicios de a dos deben encadenarse sin contradicción.</p>
+    </div>
+
+    <p>Dos observaciones que el libro subraya:</p>
+    <ol>
+      <li>Juntos, los Axiomas 1 y 2 implican que el consumidor puede ordenar completamente <strong>cualquier subconjunto finito</strong> de $X$, de mejor a peor, admitiendo empates. Es un buen ejercicio probarlo por inducción sobre el número de elementos.</li>
+      <li>Es un axioma <strong>controvertido</strong>: hay evidencia experimental de elecciones humanas intransitivas. Se conserva de todos modos, con reservas explícitas.</li>
+    </ol>
+
+    <div class="block def">
+      <span class="tag">Definiciones 1.1–1.3</span>
+      <p><strong>1.1 (Relación de preferencia).</strong> $\succsim$ sobre $X$ es una relación de preferencia si satisface los Axiomas 1 y 2. Es decir: completa + transitiva. Nada más — todo lo demás (continuidad, monotonicidad, convexidad) es estructura adicional.</p>
+      <p><strong>1.2 (Preferencia estricta).</strong> $x^1 \succ x^2$ si y solo si $x^1 \succsim x^2$ <strong>y</strong> no $x^2 \succsim x^1$.</p>
+      <p><strong>1.3 (Indiferencia).</strong> $x^1 \sim x^2$ si y solo si $x^1 \succsim x^2$ <strong>y</strong> $x^2 \succsim x^1$.</p>
+    </div>
+
+    <p>Ambas relaciones son <strong>derivadas</strong>, no primitivas: se construyen a partir de $\succsim$. Propiedades que heredan y las que no:</p>
+    <ul>
+      <li>$\succ$ y $\sim$ son <strong>transitivas</strong>.</li>
+      <li>Ninguna de las dos es <strong>completa</strong>. (Si $x \sim y$, no vale $x \succ y$ ni $y \succ x$, así que $\succ$ deja pares sin relacionar.)</li>
+      <li><strong>Tricotomía:</strong> para cualquier par $x^1, x^2$, exactamente una de tres posibilidades mutuamente excluyentes se cumple: $x^1 \succ x^2$, $x^2 \succ x^1$, o $x^1 \sim x^2$. Esta es la consecuencia operativa más útil de los Axiomas 1 y 2.</li>
+    </ul>
+
+    <div class="block def">
+      <span class="tag">Definición 1.4 — Conjuntos derivados</span>
+      <p>Fijado $x^0 \in X$, se definen cinco subconjuntos de $X$:</p>
+      <div class="tw"><table>
+        <thead><tr><th>Conjunto</th><th>Definición</th><th>Nombre</th></tr></thead>
+        <tbody>
+          <tr><td>$\succsim(x^0)$</td><td>$\{x \in X : x \succsim x^0\}$</td><td>al menos tan bueno como (contorno superior)</td></tr>
+          <tr><td>$\precsim(x^0)$</td><td>$\{x \in X : x^0 \succsim x\}$</td><td>no mejor que (contorno inferior)</td></tr>
+          <tr><td>$\prec(x^0)$</td><td>$\{x \in X : x^0 \succ x\}$</td><td>peor que</td></tr>
+          <tr><td>$\succ(x^0)$</td><td>$\{x \in X : x \succ x^0\}$</td><td>preferido a</td></tr>
+          <tr><td>$\sim(x^0)$</td><td>$\{x \in X : x \sim x^0\}$</td><td>conjunto de indiferencia</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <p>Relaciones estructurales que hay que saber de memoria:</p>
+    <ul>
+      <li>$\sim(x^0) = \succsim(x^0) \cap \precsim(x^0)$.</li>
+      <li>$\prec(x^0)$ es el complemento de $\succsim(x^0)$; $\succ(x^0)$ es el complemento de $\precsim(x^0)$.</li>
+      <li>Los tres conjuntos $\prec(x^0)$, $\sim(x^0)$, $\succ(x^0)$ <strong>particionan</strong> $X$, por tricotomía.</li>
+    </ul>
+
+    <div class="note">
+      <p><strong>Punto conceptual clave de la Figura 1.1:</strong> con solo los Axiomas 1 y 2, las «curvas» de indiferencia pueden ser horribles: bandas gruesas, huecos, tramos con pendiente positiva. Todo eso es <em>consistente</em> con completitud y transitividad. Las patologías se eliminan una por una con los axiomas siguientes.</p>
+    </div>
+
+    <p>A partir de aquí el libro fija explícitamente <strong>$X = \mathbb{R}^n_+$</strong>, el ortante no negativo. Es necesario porque los axiomas restantes usan estructura topológica y vectorial.</p>
+
+    <div class="block def">
+      <span class="tag">Axioma 3 — Continuidad</span>
+      <p>Para todo $x \in \mathbb{R}^n_+$, los conjuntos $\succsim(x)$ y $\precsim(x)$ son <strong>cerrados</strong> en $\mathbb{R}^n_+$.</p>
+    </div>
+
+    <p><strong>Traducción topológica:</strong> $\succsim(x)$ cerrado ⟺ su complemento $\prec(x)$ abierto. Igualmente $\precsim(x)$ cerrado ⟺ $\succ(x)$ abierto.</p>
+    <p><strong>Formulación secuencial equivalente</strong> (la más útil en la práctica): si $y^n \succsim x$ para todo $n$ y $y^n \to y$, entonces $y \succsim x$. En palabras: <strong>no hay reversiones súbitas de preferencia</strong> al pasar al límite.</p>
+    <p><strong>Consecuencia inmediata:</strong> $\sim(x)$ es cerrado, por ser intersección de dos cerrados. Esto elimina los «huecos» abiertos dentro de un conjunto de indiferencia.</p>
+
+    <div class="warn">
+      <p>Este axioma <strong>no dice nada sobre gustos</strong>. Es puramente de regularidad matemática. Su función real aparece en el Teorema 1.1: es lo que permite representar $\succsim$ con una función <em>continua</em>.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Contraejemplo canónico — preferencias lexicográficas</span>
+      <p>No está en el texto, pero se pregunta siempre. En $\mathbb{R}^2_+$, define $x \succ y$ si $x_1 &gt; y_1$, o si $x_1 = y_1$ y $x_2 &gt; y_2$.</p>
+      <p>Son completas y transitivas, pero violan la continuidad: toma $x = (1,0)$ y la sucesión $y^n = (1 + 1/n,\ 0)$. Cada $y^n \succ x$, y $y^n \to (1,0) = x$, pero el límite no es estrictamente preferido a $x$; el conjunto $\succ(x)$ no es cerrado y $\succsim(x)$ tampoco.</p>
+      <p>Estas preferencias <strong>no admiten ninguna representación por función de utilidad real</strong>, ni continua ni discontinua. Es la mejor forma de ver por qué el Axioma 3 hace falta.</p>
+    </div>
+
+    <div class="block def">
+      <span class="tag">Axioma 4′ — No saciedad local</span>
+      <p>Para todo $x^0 \in \mathbb{R}^n_+$ y todo $\varepsilon &gt; 0$, existe $x \in B_\varepsilon(x^0) \cap \mathbb{R}^n_+$ tal que $x \succ x^0$.</p>
+      <p>En cualquier vecindad de cualquier canasta, por pequeña que sea, hay algo mejor. Formaliza la idea débil de que los deseos son ilimitados.</p>
+    </div>
+
+    <p><strong>Qué permite:</strong> que la mejora consista en <em>menos</em> de algunos bienes, o incluso menos de todos. No dice «más es mejor».</p>
+    <p><strong>Qué elimina:</strong> las <strong>zonas gruesas de indiferencia</strong>. Si hubiera una bola entera de canastas todas indiferentes a $x^1$, tomando ese $\varepsilon$ no habría ningún punto estrictamente preferido dentro, contradiciendo el axioma.</p>
+
+    <div class="block def">
+      <span class="tag">Axioma 4 — Monotonicidad estricta</span>
+      <p>Para todo $x^0, x^1 \in \mathbb{R}^n_+$: si $x^0 \geq x^1$ entonces $x^0 \succsim x^1$; y si $x^0 \gg x^1$ entonces $x^0 \succ x^1$.</p>
+      <p>Dos cláusulas, dos órdenes distintos. Al menos tanto de todo ⟹ <strong>débilmente</strong> mejor. Estrictamente más de <strong>todo</strong> ⟹ <strong>estrictamente</strong> mejor.</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Relación lógica:</strong> Axioma 4 ⟹ Axioma 4′. La monotonicidad estricta es más fuerte; hereda todos los efectos de la no saciedad local y añade más. Por eso el libro usa la convención de que los números <em>primados</em> son las versiones <strong>menos</strong> restrictivas.</p>
+    </div>
+
+    <p><strong>Efectos geométricos en $\mathbb{R}^2_+$</strong>, dividiendo el plano en cuadrantes centrados en $x^0$:</p>
+    <ul>
+      <li>Ningún punto del cuadrante <strong>noreste</strong> puede estar en $\sim(x^0)$: todos tienen más de ambos bienes, luego están en $\succ(x^0)$.</li>
+      <li>Ningún punto del cuadrante <strong>suroeste</strong> puede estar en $\sim(x^0)$: todos están en $\prec(x^0)$.</li>
+      <li>Por tanto la curva de indiferencia <strong>no puede tener tramos de pendiente positiva</strong>, y el conjunto «preferido a» queda <em>arriba</em> de la curva mientras el «peor que» queda <em>abajo</em>.</li>
+    </ul>
+
+    <div class="block def">
+      <span class="tag">Axiomas 5′ y 5 — Convexidad</span>
+      <p><strong>5′ (Convexidad).</strong> Si $x^1 \succsim x^0$, entonces $t x^1 + (1-t)x^0 \succsim x^0$ para todo $t \in [0,1]$.</p>
+      <p><strong>5 (Convexidad estricta).</strong> Si $x^1 \neq x^0$ y $x^1 \succsim x^0$, entonces $t x^1 + (1-t)x^0 \succ x^0$ para todo $t \in (0,1)$.</p>
+    </div>
+
+    <div class="warn">
+      <p>Fíjate en los detalles finos que distinguen a las dos: el intervalo <strong>cerrado</strong> $[0,1]$ frente al <strong>abierto</strong> $(0,1)$, la exigencia $x^1 \neq x^0$, y la conclusión $\succsim$ frente a $\succ$.</p>
+    </div>
+
+    <p><strong>Qué eliminan:</strong> los tramos cóncavos hacia el origen en las curvas de indiferencia. Si $x^1 \sim x^0$ y $x^2 \sim x^0$ con el arco entre ellos «hundido» hacia afuera, entonces la combinación convexa $x^t$ cae en $\prec(x^0)$, contradiciendo tanto 5′ como 5.</p>
+
+    <p><strong>Dos lecturas intuitivas</strong> (ambas se usan en el curso):</p>
+    <ol>
+      <li><strong>Sesgo hacia lo equilibrado.</strong> Si $x^1$ y $x^2$ son indiferentes pero cada uno es «extremo» en la proporción de un bien, cualquier mezcla $x^t$ es una canasta más balanceada. El Axioma 5′ pide que lo balanceado no sea <em>peor</em>; el Axioma 5 pide que sea estrictamente <em>mejor</em>.</li>
+      <li><strong>Curvatura y TMS decreciente.</strong> Con $X = \mathbb{R}^2_+$, el valor absoluto de la pendiente de la curva de indiferencia es la <strong>tasa marginal de sustitución</strong> del bien 2 por el bien 1: la cantidad del bien 2 que el consumidor está justo dispuesto a ceder por una unidad del bien 1 manteniendo la indiferencia. Bajo monotonicidad estricta, la convexidad equivale a que la TMS <strong>no aumente</strong> al desplazarse del noroeste al sudeste sobre la curva; la convexidad estricta pide que <strong>disminuya estrictamente</strong>.</li>
+    </ol>
+
+    <div class="note">
+      <p><strong>Clasificación de los axiomas</strong> — la respuesta corta si te preguntan «¿para qué sirve cada axioma?»:</p>
+      <div class="tw"><table>
+        <thead><tr><th>Grupo</th><th>Axiomas</th><th>Función</th></tr></thead>
+        <tbody>
+          <tr><td>Consistencia de la elección</td><td>1, 2</td><td>el consumidor puede comparar y sus comparaciones se encadenan</td></tr>
+          <tr><td>Regularidad matemática</td><td>3</td><td>garantiza contornos topológicamente «buenos»; permite representación continua</td></tr>
+          <tr><td>Gustos: no saciedad</td><td>4′ (débil), 4 (fuerte)</td><td>los deseos no se agotan / más es mejor</td></tr>
+          <tr><td>Gustos: sesgo al equilibrio</td><td>5′ (débil), 5 (fuerte)</td><td>aversión a las canastas extremas / TMS decreciente</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <hr>
+
+    <h2 id="m122"><span class="kicker">Sección 1.2.2</span>La función de utilidad</h2>
+
+    <div class="block def">
+      <span class="tag">Definición 1.5 — Representación</span>
+      <p>$u : \mathbb{R}^n_+ \to \mathbb{R}$ <strong>representa</strong> a $\succsim$ si para todo $x^0, x^1 \in \mathbb{R}^n_+$:</p>
+      $$u(x^0) \geq u(x^1) \iff x^0 \succsim x^1$$
+    </div>
+
+    <p>Nótese la doble implicación: no basta con que la utilidad respete el orden en un sentido. Y la desigualdad es <strong>débil</strong> en ambos lados. Consecuencias que se usan sin mencionarlas: $u(x^0) &gt; u(x^1) \iff x^0 \succ x^1$ y $u(x^0) = u(x^1) \iff x^0 \sim x^1$.</p>
+
+    <div class="block thm" id="t11">
+      <span class="tag">Teorema 1.1 — Existencia de una representación</span>
+      <p>Si $\succsim$ es completa, transitiva, continua y <strong>estrictamente monótona</strong>, entonces existe una función continua $u : \mathbb{R}^n_+ \to \mathbb{R}$ que la representa.</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Contexto que el libro señala explícitamente:</strong> el resultado general (Debreu) solo requiere completitud + transitividad + continuidad. La monotonicidad estricta <strong>no es necesaria</strong>; se añade aquí para simplificar la demostración y hacerla intuitiva. Además, ninguna forma de convexidad interviene.</p>
+      <p>Es un <strong>teorema de existencia y nada más</strong>. No dice cuántas funciones representan a $\succsim$ (siempre hay infinitas) ni qué forma tienen. Por eso la estrategia de la prueba es <em>construir una</em> explícitamente.</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Esquema de la demostración</span>
+      <p>Sea $e = (1,1,\dots,1)$. Para $t \geq 0$, el vector $te = (t,\dots,t)$ recorre el rayo de 45° desde el origen. La idea es medir cada canasta por el punto del rayo que le resulta indiferente:</p>
+      $$\text{definir } u(x) \text{ como el número que satisface } u(x)\,e \sim x$$
+      <p><strong>(i) ¿Existe tal número?</strong> Fija $x$ y define dos conjuntos de escalares:</p>
+      $$A \equiv \{t \geq 0 : te \succsim x\}, \qquad B \equiv \{t \geq 0 : te \precsim x\}$$
+      <p>Si $t^* \in A \cap B$ entonces $t^* e \sim x$, que es justo lo que se busca. Se muestra que la intersección no es vacía:</p>
+      <ul>
+        <li>Por <strong>continuidad</strong>, $A$ y $B$ son cerrados en $\mathbb{R}_+$.</li>
+        <li>Por <strong>monotonicidad estricta</strong>, si $t \in A$ y $t' \geq t$, entonces $t' \in A$. Luego $A$ es un intervalo cerrado del tipo $[\underline{t},\infty)$. Simétricamente, $B$ es del tipo $[0,\bar{t}]$.</li>
+        <li>Por <strong>completitud</strong>, todo $t \geq 0$ está en $A$ o en $B$, así que $\mathbb{R}_+ = A \cup B = [0,\bar t] \cup [\underline t, \infty)$. Para que esa unión cubra toda la semirrecta hace falta $\underline t \leq \bar t$, es decir $A \cap B \neq \emptyset$.</li>
+      </ul>
+      <p><strong>(ii) ¿Es único?</strong> Si $t_1 e \sim x$ y $t_2 e \sim x$, por transitividad de $\sim$ se tiene $t_1 e \sim t_2 e$; la monotonicidad estricta obliga entonces a $t_1 = t_2$. Con existencia y unicidad, $u$ está bien definida como función.</p>
+      <p><strong>(iii) $u$ representa a $\succsim$.</strong> Cadena de equivalencias:</p>
+      $$x^1 \succsim x^2 \iff u(x^1)e \sim x^1 \succsim x^2 \sim u(x^2)e \iff u(x^1)e \succsim u(x^2)e \iff u(x^1) \geq u(x^2)$$
+      <p>La primera equivalencia es la definición de $u$; la segunda usa transitividad de $\succsim$ y de $\sim$; la tercera usa monotonicidad estricta a lo largo del rayo.</p>
+      <p><strong>(iv) $u$ es continua.</strong> Basta ver que la preimagen de todo intervalo abierto $(a,b)$ es abierta:</p>
+      $$u^{-1}((a,b)) = \{x : a &lt; u(x) &lt; b\} = \{x : ae \prec x \prec be\} = \succ(ae) \cap \prec(be)$$
+      <p>Ambos conjuntos son abiertos (complementos de los cerrados que garantiza la continuidad de $\succsim$), y la intersección de dos abiertos es abierta. ∎</p>
+      <p><strong>Lo que hay que retener:</strong> dónde entra cada axioma. Continuidad → cerradura de $A$ y $B$; monotonicidad estricta → estructura de intervalos, unicidad y el último paso; completitud → que $A \cup B$ cubra $\mathbb{R}_+$; transitividad → la cadena de equivalencias.</p>
+    </div>
+
+    <div class="block thm" id="t12">
+      <span class="tag">Teorema 1.2 — Invariancia ante transformaciones monótonas</span>
+      <p>Sea $u$ una representación de $\succsim$. Entonces $v$ también representa a $\succsim$ <strong>si y solo si</strong> $v(x) = f(u(x))$ para todo $x$, donde $f : \mathbb{R}\to\mathbb{R}$ es <strong>estrictamente creciente</strong> sobre el conjunto de valores que toma $u$.</p>
+    </div>
+
+    <p>Es un «si y solo si»: no solo toda transformación monótona creciente sirve, sino que <strong>toda</strong> representación alternativa es de esa forma.</p>
+    <p>Ejemplos: si $u$ representa a $\succsim$, también lo hacen $u+5$, $u^3$, $\ln u$ (donde $u &gt; 0$), $2u - 7$. No lo hace $-u$, que invierte el orden, ni $u^2$ si $u$ toma valores negativos.</p>
+
+    <div class="note">
+      <p><strong>La consecuencia interpretativa es el punto central de toda la sección:</strong> la utilidad es <strong>ordinal</strong>. Los números asignados no tienen ningún significado por sí mismos; solo importa su <em>orden</em>. Decir «la canasta A da 10 útiles y la B da 5, luego A es el doble de buena» es una afirmación sin contenido. Ni siquiera las diferencias son comparables.</p>
+      <p>Esto a la vez <strong>libera</strong> (puedes reemplazar $u$ por la transformación monótona más cómoda de manipular — el log de una Cobb-Douglas, por ejemplo) y <strong>restringe</strong> (no puedes extraer conclusiones de las magnitudes).</p>
+    </div>
+
+    <div class="block thm" id="t13">
+      <span class="tag">Teorema 1.3 — Preferencias y utilidad</span>
+      <p>Sea $\succsim$ representada por $u : \mathbb{R}^n_+ \to \mathbb{R}$. Entonces:</p>
+      <ol>
+        <li>$u$ es <strong>estrictamente creciente</strong> ⟺ $\succsim$ es estrictamente monótona.</li>
+        <li>$u$ es <strong>cuasicóncava</strong> ⟺ $\succsim$ es convexa.</li>
+        <li>$u$ es <strong>estrictamente cuasicóncava</strong> ⟺ $\succsim$ es estrictamente convexa.</li>
+      </ol>
+    </div>
+
+    <p>Este teorema es el <strong>diccionario</strong> entre el lenguaje de las preferencias y el del cálculo. Cada axioma de gustos tiene su traducción exacta en una propiedad de $u$, y las equivalencias son en ambos sentidos: siempre que supongas algo sobre $u$ más allá de la continuidad, estás suponiendo implícitamente algo sobre $\succsim$.</p>
+
+    <p>Recordatorio de definiciones del apéndice matemático:</p>
+    <ul>
+      <li>$u$ es <strong>cuasicóncava</strong> si $u(tx + (1-t)y) \geq \min\{u(x),u(y)\}$ para $t \in [0,1]$. Equivalentemente: todos sus conjuntos de contorno superior $\{x : u(x) \geq c\}$ son convexos. Esa equivalencia es justo por qué «preferencias convexas» ⟺ «contornos superiores convexos» ⟺ «cuasiconcavidad».</li>
+      <li>$u$ es <strong>estrictamente cuasicóncava</strong> si la desigualdad es estricta para $x \neq y$ y $t \in (0,1)$.</li>
+    </ul>
+
+    <div class="warn">
+      <p><strong>Error común:</strong> confundir cuasiconcavidad con concavidad. La concavidad es una propiedad <strong>cardinal</strong> (no sobrevive a transformaciones monótonas cualesquiera) y por tanto no puede corresponder a ningún axioma sobre $\succsim$. La cuasiconcavidad sí es ordinal: si $u$ es cuasicóncava y $f$ estrictamente creciente, $f \circ u$ sigue siéndolo. Toda función cóncava es cuasicóncava, pero no al revés.</p>
+    </div>
+
+    <hr>
+
+    <h2 id="calculo"><span class="kicker">Final de §1.2</span>Herramientas de cálculo</h2>
+
+    <p>La diferenciabilidad es <strong>más exigente</strong> que la continuidad: excluye los «picos» o quiebres, que son perfectamente compatibles con la continuidad. No existe un axioma sencillo sobre $\succsim$ que la garantice (el libro remite a Debreu para la condición exacta) y simplemente se supone cuando hace falta.</p>
+
+    <h3>Utilidad marginal</h3>
+    <p>La derivada parcial $\partial u(x)/\partial x_i$ se llama <strong>utilidad marginal del bien $i$</strong>. Como todo lo derivado de $u$, su <em>magnitud</em> carece de significado ordinal; su <em>signo</em> sí importa.</p>
+
+    <h3>La TMS como razón de utilidades marginales</h3>
+    <p>Sea $x_2 = f(x_1)$ la función que describe la curva de indiferencia que pasa por $x^1$. Por construcción, a lo largo de ella la utilidad es constante: $u(x_1, f(x_1)) = \text{constante}$. Derivando respecto de $x_1$ por la regla de la cadena e igualando a cero:</p>
+    $$\frac{\partial u}{\partial x_1} + \frac{\partial u}{\partial x_2}\, f'(x_1) = 0$$
+    <p>Como la TMS se define como el valor absoluto de la pendiente y $f' &lt; 0$, se tiene $\mathrm{MRS}_{12} = -f'$, y despejando:</p>
+    $$\mathrm{MRS}_{12}(x) = \frac{\partial u(x)/\partial x_1}{\partial u(x)/\partial x_2}$$
+    <p>En el caso general de $n$ bienes, la tasa marginal de sustitución del bien $j$ por el bien $i$ es</p>
+    $$\mathrm{MRS}_{ij}(x) = \frac{\partial u(x)/\partial x_i}{\partial u(x)/\partial x_j}$$
+    <p>Cuando las utilidades marginales son estrictamente positivas, $\mathrm{MRS}_{ij}$ es un número positivo que indica a qué tasa puede intercambiarse el bien $j$ por unidad del bien $i$ sin alterar la utilidad.</p>
+
+    <div class="note">
+      <p><strong>Comprobación de que la TMS es ordinal</strong> (buen ejercicio): reemplaza $u$ por $f\circ u$. Las utilidades marginales quedan multiplicadas por $f'(u(x))$, que <strong>se cancela en el cociente</strong>. La TMS no cambia — como debe ser, porque es la pendiente de una curva de indiferencia, un objeto que solo depende de $\succsim$.</p>
+    </div>
+
+    <h3>Dos matices técnicos</h3>
+    <ol>
+      <li><strong>Monotonicidad estricta no implica utilidad marginal positiva en todo punto.</strong> Solo garantiza $\partial u/\partial x_i &gt; 0$ para «casi toda» canasta. El contraejemplo del libro es $u(x) = x + \operatorname{sen}(x)$ en un bien: es estrictamente creciente, luego representa preferencias estrictamente monótonas, pero su derivada se anula en los puntos $x = \pi + 2\pi k$.</li>
+      <li><strong>Cuasiconcavidad y la Hessiana.</strong> Si $u$ es cuasicóncava, su matriz Hessiana $H(x)$ satisface
+        $$y^{\mathsf{T}} H(x)\, y \leq 0 \quad \text{para todo } y \text{ tal que } \nabla u(x)\cdot y = 0$$
+        Interpretación: $\nabla u(x)\cdot y = 0$ significa que $y$ es tangente a la superficie de indiferencia en $x$. La condición dice que moverse en una dirección tangente reduce la utilidad — la versión de segundo orden de «la curva de indiferencia se dobla hacia el origen».</li>
+    </ol>
+
+    <h3>Ejemplos de trabajo</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Función de utilidad</th><th>Monotonicidad</th><th>Convexidad</th><th>Comentario</th></tr></thead>
+      <tbody>
+        <tr><td>Cobb-Douglas $u = x_1^\alpha x_2^\beta$, $\alpha,\beta&gt;0$</td><td>estricta en $\mathbb{R}^2_{++}$</td><td>estricta</td><td>$\mathrm{MRS}_{12} = \alpha x_2 / \beta x_1$, decreciente. $\ln u = \alpha \ln x_1 + \beta \ln x_2$ es una transformación monótona muy cómoda</td></tr>
+        <tr><td>Sustitutos perfectos $u = ax_1 + bx_2$</td><td>estricta</td><td>convexa pero <strong>no</strong> estricta</td><td>curvas de indiferencia rectas; TMS constante $= a/b$; satisface el Axioma 5′ pero no el 5</td></tr>
+        <tr><td>Complementarios $u = \min\{ax_1, bx_2\}$</td><td><strong>no</strong> estricta</td><td>convexa, no estricta</td><td>añadir solo un bien no mejora ⟹ falla el Axioma 4; sí cumple no saciedad local sobre el rayo eficiente</td></tr>
+        <tr><td>CES $u = (x_1^\rho + x_2^\rho)^{1/\rho}$, $\rho&lt;1$, $\rho\neq0$</td><td>estricta</td><td>estricta si $\rho&lt;1$</td><td>anida los dos anteriores como casos límite</td></tr>
+        <tr><td>Lexicográficas</td><td>estricta</td><td>—</td><td>violan continuidad; <strong>no admiten representación</strong></td></tr>
+      </tbody>
+    </table></div>
+    <p>Ejercicio recomendado: para cada fila, verifica formalmente los Axiomas 4/4′ y 5/5′ y contrasta el resultado con el Teorema 1.3.</p>
+
+    <div class="note">
+      <p><strong>Puente hacia §1.3 — por qué importa todo esto.</strong> La Suposición 1.2 del libro reúne el paquete estándar: $\succsim$ completa, transitiva, continua, estrictamente monótona y estrictamente convexa sobre $\mathbb{R}^n_+$. Por los Teoremas 1.1 y 1.3, eso equivale a que exista $u$ <strong>continua, estrictamente creciente y estrictamente cuasicóncava</strong>. Estos tres adjetivos son precisamente los que hacen funcionar el problema del consumidor:</p>
+      <ul>
+        <li>continua + conjunto presupuestario compacto ⟹ <strong>existe</strong> solución (Weierstrass);</li>
+        <li>estrictamente cuasicóncava + presupuesto convexo ⟹ la solución es <strong>única</strong>;</li>
+        <li>estrictamente creciente ⟹ la restricción presupuestaria se cumple <strong>con igualdad</strong>.</li>
+      </ul>
+      <p>Cada axioma de §1.2 se paga con una propiedad concreta de la demanda marshalliana. Guarda esta lista: §2.3 recorre el camino en sentido inverso.</p>
+    </div>
+
+    <hr>
+
+    <h2 id="warp"><span class="kicker">Sección 2.3</span>Preferencia revelada</h2>
+
+    <h3>El giro metodológico</h3>
+    <p>Hasta §2.2 el programa fue: <strong>suponer</strong> algo sobre lo <em>inobservable</em> (las preferencias) para <strong>deducir</strong> propiedades de lo <em>observable</em> (la demanda: balance presupuestario, simetría y semidefinición negativa de la matriz de Slutsky).</p>
+    <p>Samuelson (<em>Foundations of Economic Analysis</em>, 1947) propuso invertirlo: empezar y terminar en lo observable. La idea básica es directa: <strong>si el consumidor compra una canasta pudiendo pagar otra, la primera queda revelada preferida a la segunda.</strong> En lugar de axiomas sobre gustos, se imponen axiomas de <strong>consistencia sobre las elecciones</strong>.</p>
+
+    <div class="block def">
+      <span class="tag">Definición 2.1 — WARP</span>
+      <p>El comportamiento de elección satisface el <strong>Axioma Débil de la Preferencia Revelada</strong> si para todo par de canastas distintas $x^0, x^1$, con $x^0$ elegida a precios $p^0$ y $x^1$ elegida a precios $p^1$:</p>
+      $$p^0 \cdot x^1 \leq p^0 \cdot x^0 \quad \Longrightarrow \quad p^1 \cdot x^0 &gt; p^1 \cdot x^1$$
+    </div>
+
+    <p><strong>Lectura:</strong> el antecedente dice que cuando se eligió $x^0$, la canasta $x^1$ era asequible y aun así fue descartada — o sea, $x^0$ está revelada preferida a $x^1$. El consecuente exige que, en la situación en que se eligió $x^1$, la canasta $x^0$ fuera <strong>inasequible</strong> (costaba estrictamente más). En breve: si $x^0$ se revela preferida a $x^1$, entonces $x^1$ nunca puede revelarse preferida a $x^0$.</p>
+
+    <div class="warn">
+      <p>WARP prohíbe <strong>ciclos directos de longitud 2</strong>. Nada más. Esa limitación será exactamente el problema más adelante.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo — WARP se cumple</span>
+      <div class="tw"><table>
+        <thead><tr><th>Observación</th><th>Precios</th><th>Canasta elegida</th><th>Gasto</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>$p^0 = (1,1)$</td><td>$x^0 = (6,4)$</td><td>10</td></tr>
+          <tr><td>1</td><td>$p^1 = (2,1)$</td><td>$x^1 = (2,8)$</td><td>12</td></tr>
+        </tbody>
+      </table></div>
+      <p>$p^0 \cdot x^1 = 2+8 = 10 \leq 10 = p^0\cdot x^0$, luego $x^0$ está revelada preferida a $x^1$. WARP exige $p^1 \cdot x^0 &gt; p^1 \cdot x^1$: en efecto, $12+4 = 16 &gt; 12$. Sin violación.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo — WARP se viola</span>
+      <div class="tw"><table>
+        <thead><tr><th>Observación</th><th>Precios</th><th>Canasta elegida</th><th>Gasto</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>$p^0 = (1,1)$</td><td>$x^0 = (6,4)$</td><td>10</td></tr>
+          <tr><td>1</td><td>$p^1 = (1,2)$</td><td>$x^1 = (4,5)$</td><td>14</td></tr>
+        </tbody>
+      </table></div>
+      <p>$p^0\cdot x^1 = 4+5 = 9 \leq 10$, luego $x^0$ está revelada preferida a $x^1$. Pero $p^1 \cdot x^0 = 6+8 = 14 = p^1\cdot x^1$: no se cumple la desigualdad estricta, así que $x^0$ era asequible cuando se eligió $x^1$. Violación.</p>
+      <p>Geométricamente, esta es la diferencia entre los dos paneles de la Figura 2.3: en el caso consistente, el presupuesto nuevo deja fuera a la primera canasta; en el inconsistente, <strong>ambas</strong> canastas eran asequibles en las dos situaciones y aun así la elección cambió.</p>
+    </div>
+
+    <h3>Funciones de elección, no funciones de demanda</h3>
+    <p>Notación crítica: se escribe $x(p,y)$ para la canasta elegida a precios $p$ con ingreso $y$, y se la llama <strong>función de elección</strong>, <em>no</em> función de demanda. La distinción es deliberada: en este marco no se ha mencionado ninguna utilidad ni ningún proceso de maximización. $x(p,y)$ es un registro de conducta observada, nada más.</p>
+    <p>Al WARP se le añade un segundo supuesto, igualmente observable:</p>
+    <div class="block def">
+      <span class="tag">Balance presupuestario</span>
+      <p>Para $p \gg 0$: &nbsp;$p \cdot x(p,y) = y$. &nbsp;O sea: el consumidor gasta todo su ingreso.</p>
+    </div>
+    <p>Dos requisitos que parecen inofensivos; las implicaciones son considerables.</p>
+
+    <h2 id="res1">Resultado 1 — Homogeneidad de grado cero</h2>
+
+    <div class="block thm">
+      <span class="tag">Enunciado</span>
+      <p>WARP + balance presupuestario ⟹ $x(p,y)$ es homogénea de grado cero en $(p,y)$, es decir $x(tp, ty) = x(p,y)$ para todo $t &gt; 0$.</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Demostración (por contradicción)</span>
+      <p>Sea $x^0 = x(p^0,y^0)$ y sea $x^1 = x(p^1,y^1)$ con $p^1 = tp^0$ e $y^1 = ty^0$, $t &gt; 0$. Por balance presupuestario en ambas observaciones:</p>
+      $$p^1 \cdot x^1 = y^1 = t y^0 = t(p^0 \cdot x^0)$$
+      <p>Ahora se manipula esa igualdad de dos formas. Sustituyendo $p^1 = tp^0$ en el lado izquierdo y dividiendo todo entre $t$:</p>
+      $$p^0 \cdot x^1 = p^0 \cdot x^0 \tag{2.3}$$
+      <p>Sustituyendo $tp^0 = p^1$ en el lado derecho:</p>
+      $$p^1 \cdot x^1 = p^1 \cdot x^0 \tag{2.4}$$
+      <p>Supongamos que $x^0$ y $x^1$ fueran distintas. Por (2.3) se cumple el antecedente de WARP, con igualdad, luego WARP obliga a que $p^1 \cdot x^0 &gt; p^1 \cdot x^1$, lo que contradice directamente la igualdad (2.4). Por lo tanto las canastas no pueden ser distintas: $x^0 = x^1$. ∎</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Lo notable:</strong> la homogeneidad de grado cero es una de las propiedades características de la demanda derivada de maximizar utilidad, y aquí aparece <strong>sin haber mencionado la utilidad ni una sola vez</strong>. La ausencia de «ilusión monetaria» es una consecuencia de la mera consistencia de las elecciones.</p>
+    </div>
+
+    <h2 id="res2">Resultado 2 — Matriz de Slutsky semidefinida negativa</h2>
+
+    <p>Esta es la parte técnicamente más densa de la sección. Conviene seguirla como una secuencia de seis pasos.</p>
+
+    <p><strong>La compensación de Slutsky.</strong> Se fija una canasta de referencia $x^0$ y se hace variar los precios arbitrariamente, ajustando el ingreso en cada momento de modo que el consumidor pueda <em>justo</em> costear $x^0$. A precios $p$, ese ingreso compensado es $p\cdot x^0$, y la conducta observada es $x(p,\ p\cdot x^0)$.</p>
+
+    <div class="proof">
+      <span class="tag">Paso 1 — La desigualdad básica</span>
+      <p>Fija $p^0 \gg 0$, $y^0 &gt; 0$, y sea $x^0 = x(p^0,y^0)$. Para cualquier otro vector de precios $p^1$, define $x^1 = x(p^1,\ p^1\cdot x^0)$. Entonces:</p>
+      $$p^0 \cdot x^0 \leq p^0 \cdot x^1 \tag{2.5}$$
+      <p><em>Justificación:</em> si $x^1 = x^0$, vale con igualdad. Si $x^1 \neq x^0$, entonces $x^1$ fue elegida en una situación en la que $x^0$ era asequible (por construcción del ingreso compensado, $p^1\cdot x^0$ alcanza exactamente para $x^0$). Luego $x^1$ está revelada preferida a $x^0$, y WARP impide que $x^0$ esté revelada preferida a $x^1$: cuando se eligió $x^0$, la canasta $x^1$ no era asequible, es decir $p^0 \cdot x^1 &gt; p^0\cdot x^0$.</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Pasos 2 y 3 — Balance y resta</span>
+      <p>En la situación compensada, todo el ingreso se gasta:</p>
+      $$p^1 \cdot x^0 = p^1 \cdot x(p^1,\ p^1 \cdot x^0) \tag{2.6}$$
+      <p>Restando (2.5) de (2.6):</p>
+      $$(p^1 - p^0)\cdot x^0 \geq (p^1-p^0)\cdot x(p^1,\ p^1\cdot x^0) \tag{2.7}$$
+    </div>
+
+    <div class="proof">
+      <span class="tag">Paso 4 — Parametrizar la dirección de precios</span>
+      <p>Como (2.7) vale para <em>todos</em> los precios $p^1$, elige $p^1 = p^0 + tz$ con $t &gt; 0$ y $z \in \mathbb{R}^n$ <strong>arbitrario</strong>. Entonces $p^1 - p^0 = tz$ y (2.7) queda $t[z\cdot x^0] \geq t[z \cdot x^1]$. Dividiendo entre $t &gt; 0$:</p>
+      $$z \cdot x^0 \geq z \cdot x(p^0+tz,\ (p^0+tz)\cdot x^0) \tag{2.9}$$
+    </div>
+
+    <div class="proof">
+      <span class="tag">Paso 5 — Convertirlo en un problema de máximo</span>
+      <p>Como $p^0 \gg 0$, para $z$ fijo puede elegirse $\bar t &gt; 0$ suficientemente pequeño para que $p^0 + tz \gg 0$ en todo $t \in [0,\bar t]$. Define</p>
+      $$f(t) \equiv z \cdot x(p^0 + tz,\ (p^0+tz)\cdot x^0)$$
+      <p>En $t = 0$ la desigualdad (2.9) vale con igualdad, porque $x(p^0, p^0\cdot x^0) = x^0$. Y para $t &gt; 0$ la desigualdad dice $f(t) \leq f(0)$. Es decir: <strong>$f$ alcanza un máximo en $t=0$</strong>, que es el extremo izquierdo del intervalo. Por condición de primer orden, $f'(0) \leq 0$.</p>
+    </div>
+
+    <div class="proof">
+      <span class="tag">Paso 6 — Derivar</span>
+      <p>Suponiendo $x(\cdot)$ diferenciable, la regla de la cadena — derivando respecto de $t$ los dos argumentos: los precios cambian a razón $z$, y el ingreso compensado a razón $z\cdot x^0$ — da, evaluando en $t=0$:</p>
+      $$f'(0) = \sum_i \sum_j z_i \left[ \frac{\partial x_i(p^0,y^0)}{\partial p_j} + x_j(p^0,y^0)\frac{\partial x_i(p^0,y^0)}{\partial y} \right] z_j \leq 0 \tag{2.10}$$
+      <p>Como $z \in \mathbb{R}^n$ era <strong>arbitrario</strong>, esto dice exactamente que la matriz cuyo elemento $(i,j)$ es</p>
+      $$s_{ij} = \frac{\partial x_i(p,y)}{\partial p_j} + x_j(p,y)\,\frac{\partial x_i(p,y)}{\partial y} \tag{2.11}$$
+      <p>es <strong>semidefinida negativa</strong>. Y esa matriz es precisamente la <strong>matriz de Slutsky</strong> asociada a la función de elección. ∎</p>
+    </div>
+
+    <div class="note">
+      <p><strong>Corolario que se usa siempre:</strong> los elementos de la diagonal cumplen $s_{ii} \leq 0$, es decir el efecto sustitución propio es no positivo. Ese es el contenido observable de la «ley de la demanda compensada», y también se obtiene sin invocar utilidad.</p>
+    </div>
+
+    <h3>Balance del recorrido hasta aquí</h3>
+    <div class="tw"><table>
+      <thead><tr><th>Propiedad</th><th>¿Se obtiene de WARP + balance?</th></tr></thead>
+      <tbody>
+        <tr><td>Balance presupuestario</td><td>supuesto</td></tr>
+        <tr><td>Homogeneidad de grado cero</td><td>Sí, derivada</td></tr>
+        <tr><td>Slutsky semidefinida negativa</td><td>Sí, derivada</td></tr>
+        <tr><td>Slutsky <strong>simétrica</strong></td><td><strong>No</strong></td></tr>
+      </tbody>
+    </table></div>
+    <p>Si además se pudiera obtener la simetría, el <strong>Teorema de Integrabilidad</strong> (Teorema 2.6) permitiría construir una función de utilidad que genera esa conducta, y la función de elección sería una auténtica función de demanda. Ahí está el nudo de toda la sección.</p>
+
+    <h2 id="racional">¿WARP implica racionalizabilidad?</h2>
+
+    <div class="proof">
+      <span class="tag">La dirección fácil: maximización ⟹ WARP</span>
+      <p>Si $x(p,y)$ proviene de maximizar una utilidad con preferencias estrictamente monótonas y estrictamente convexas, entonces satisface WARP.</p>
+      <p>Bajo esos supuestos la canasta demandada es única a cada vector de precios y agota el ingreso. Sea $x^0$ óptima a $p^0$, $x^1$ óptima a $p^1$, y supón $p^0\cdot x^1 \leq p^0 \cdot x^0$. Entonces $x^1$ era asequible cuando se eligió $x^0$; como no fue elegida y el óptimo es único, debe ser $u(x^0) &gt; u(x^1)$. Ahora bien, cuando se eligió $x^1$ a precios $p^1$, si $x^0$ hubiera sido asequible se habría elegido $x^0$, que tiene mayor utilidad. Como no ocurrió, $x^0$ no era asequible: $p^1 \cdot x^0 &gt; p^1 \cdot x^1$. Eso es exactamente WARP. ∎</p>
+    </div>
+
+    <p><strong>La dirección difícil.</strong> Si una función de utilidad genera exactamente la conducta observada, se dice que <strong>racionaliza</strong> el comportamiento. ¿Toda conducta que satisface WARP es racionalizable? La respuesta es <strong>sí y no — depende del número de bienes</strong>:</p>
+    <ul>
+      <li><strong>Con 2 bienes: sí.</strong> WARP más balance presupuestario basta para que exista una utilidad que racionalice las elecciones.</li>
+      <li><strong>Con 3 o más bienes: no necesariamente.</strong> WARP puede cumplirse sin que exista ninguna utilidad que genere esa conducta.</li>
+    </ul>
+
+    <h3>Por qué la excepción de dos bienes</h3>
+    <p><strong>Explicación 1 (vía Slutsky).</strong> Con solo dos bienes, balance presupuestario junto con homogeneidad <em>implican</em> la simetría de la matriz de Slutsky — es el contenido del Ejercicio 2.9. Y ya se mostró que WARP + balance dan homogeneidad y semidefinición negativa. Reuniendo todo: en el caso de dos bienes la matriz de Slutsky resulta simétrica y semidefinida negativa, así que el Teorema de Integrabilidad permite recuperar una utilidad generadora.</p>
+    <p><strong>Explicación 2 (vía transitividad).</strong> Con dos bienes, el orden pareado inducido por la preferencia revelada <em>no tiene ciclos intransitivos</em>. Sin ciclos, la relación revelada se puede extender a un orden completo y transitivo, y de ahí a una representación de utilidad.</p>
+
+    <div class="note">
+      <p>Que las dos explicaciones sean equivalentes no es casualidad: <strong>la simetría de la matriz de Slutsky es la contrapartida diferencial de la transitividad de las preferencias.</strong> Esta es probablemente la idea más profunda de todo el capítulo 2 — vale la pena anotarla aparte.</p>
+    </div>
+
+    <p>Con más de dos bienes, WARP y balance presupuestario no implican ni simetría de Slutsky ni ausencia de ciclos. Por eso <strong>no son equivalentes a la hipótesis de maximización de utilidad</strong>.</p>
+
+    <h2 id="sarp">SARP — Axioma Fuerte de la Preferencia Revelada</h2>
+
+    <div class="block def">
+      <span class="tag">SARP</span>
+      <p>Se satisface si, para toda sucesión de canastas distintas $x^0, x^1, \dots, x^k$ en la que $x^0$ está revelada preferida a $x^1$, $x^1$ está revelada preferida a $x^2$, …, y $x^{k-1}$ está revelada preferida a $x^k$, <strong>no</strong> ocurre que $x^k$ esté revelada preferida a $x^0$.</p>
+    </div>
+
+    <p>Con $k=1$ se recupera WARP; por eso SARP es estrictamente más fuerte. <strong>Consecuencia:</strong> SARP elimina las preferencias reveladas intransitivas, y por tanto la relación revelada puede extenderse a una relación de preferencia $\succsim$ completa y transitiva, para la cual existe una función de utilidad que racionaliza la conducta observada. El libro omite la demostración y remite al argumento original de Houthakker (1950) y a la prueba de Richter (1966).</p>
+    <p>Y en el otro sentido: si el consumidor maximiza una utilidad estrictamente creciente y estrictamente cuasicóncava, su conducta satisface SARP (Ejercicio 2.11).</p>
+
+    <div class="note">
+      <p><strong>Conclusión central de §2.3:</strong> una teoría de la demanda construida <em>únicamente</em> sobre SARP —una restricción sobre elecciones observables— es esencialmente <strong>equivalente</strong> a la teoría construida sobre maximización de utilidad. Bajo cualquiera de las dos hipótesis, la demanda es homogénea de grado cero y la matriz de Slutsky es simétrica y semidefinida negativa.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Ejemplo con 3 bienes — WARP se cumple, SARP se viola</span>
+      <p>Tres observaciones, todas con ingreso 7:</p>
+      <div class="tw"><table>
+        <thead><tr><th>Obs.</th><th>Precios</th><th>Canasta elegida</th><th>Gasto</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td>$p^A = (1,1,3)$</td><td>$x^A = (3,1,1)$</td><td>7</td></tr>
+          <tr><td>B</td><td>$p^B = (3,1,1)$</td><td>$x^B = (1,3,1)$</td><td>7</td></tr>
+          <tr><td>C</td><td>$p^C = (1,3,1)$</td><td>$x^C = (1,1,3)$</td><td>7</td></tr>
+        </tbody>
+      </table></div>
+      <p>Preferencias reveladas directas (comprueba cada producto punto):</p>
+      <ul>
+        <li>$p^A\cdot x^B = 1+3+3 = 7 \leq 7$ ⟹ <strong>A revelada preferida a B</strong>. Y $p^A \cdot x^C = 1+1+9 = 11 &gt; 7$, así que C no era asequible.</li>
+        <li>$p^B\cdot x^C = 3+1+3 = 7 \leq 7$ ⟹ <strong>B revelada preferida a C</strong>. Y $p^B\cdot x^A = 9+1+1 = 11 &gt; 7$.</li>
+        <li>$p^C\cdot x^A = 3+3+1 = 7 \leq 7$ ⟹ <strong>C revelada preferida a A</strong>. Y $p^C\cdot x^B = 1+9+1 = 11 &gt; 7$.</li>
+      </ul>
+      <p><strong>¿Se viola WARP?</strong> No. Cada par se examina por separado: A se revela preferida a B, pero B no se revela preferida a A (a precios $p^B$, la canasta $x^A$ costaba 11 &gt; 7, era inasequible). Lo mismo para los otros dos pares. Ningún ciclo de longitud 2.</p>
+      <p><strong>¿Se viola SARP?</strong> Sí: hay un ciclo A → B → C → A. La relación revelada es intransitiva, así que <strong>ninguna</strong> función de utilidad puede racionalizar estos datos. Este es exactamente el tipo de conducta que WARP no logra excluir cuando hay más de dos bienes.</p>
+    </div>
+
+    <h2 id="garp">Datos finitos: GARP y Afriat</h2>
+
+    <p>Todo el análisis anterior trata a $x(p,y)$ como una <strong>función</strong> definida para todos los precios: implícitamente supone una colección infinita de datos. Pero el atractivo original de la preferencia revelada era poder partir de datos reales — y cualquier conjunto de datos real es <strong>finito</strong>.</p>
+
+    <div class="block thm">
+      <span class="tag">Teorema de Afriat (1967)</span>
+      <p>Un conjunto <strong>finito</strong> de observaciones de precios y cantidades satisface el <strong>Axioma Generalizado de la Preferencia Revelada (GARP)</strong> —algo más débil que SARP— <strong>si y solo si</strong> existe una función de utilidad continua, creciente y <strong>cóncava</strong> que racionaliza esos datos.</p>
+    </div>
+
+    <p>Dos observaciones importantes:</p>
+    <ol>
+      <li>Es un «si y solo si» <strong>constructivo y contrastable</strong>: dado un conjunto finito de datos, GARP es verificable algorítmicamente. Es la base de todo el contraste no paramétrico de la teoría del consumidor.</li>
+      <li>La utilidad puede tomarse <strong>cóncava</strong> — pero eso no es información sobre las preferencias: con datos finitos siempre hay libertad suficiente para elegir una representación cóncava. La concavidad aquí es una comodidad, no un hallazgo.</li>
+    </ol>
+
+    <h3>El problema de la subdeterminación fuera de muestra</h3>
+    <p>Con datos finitos, las preferencias quedan <strong>indeterminadas</strong> en las canastas no observadas. Habrá muchas funciones de utilidad distintas que racionalizan los mismos datos, y pueden discrepar entre sí fuera de la muestra.</p>
+
+    <div class="block ex">
+      <span class="tag">Caso favorable — la comparación sí queda determinada</span>
+      <p>Supón que se observa $x^0$ elegida a $p^0$ y $x^1$ elegida a $p^1$, y que $x^0$ está revelada preferida a $x^1$. Entonces para <strong>toda</strong> utilidad que racionalice los datos vale $u(x^0) &gt; u(x^1)$. Ahora toma dos canastas $x$ e $y$ fuera de la muestra tales que $y$ costaba menos que $x^1$ cuando $x^1$ fue elegida, y $x \geq x^0$. Encadenando:</p>
+      $$u(x) \geq u(x^0) &gt; u(x^1) &gt; u(y)$$
+      <p>Luego $u(x) &gt; u(y)$ para <em>toda</em> función de utilidad creciente que pueda haber generado los datos.</p>
+    </div>
+
+    <div class="block ex">
+      <span class="tag">Caso desfavorable — dos racionalizaciones que se contradicen</span>
+      <p>Supón que se observa una sola elección: $x^1 = (1,1)$ a precios $p^1 = (2,1)$, con ingreso 3.</p>
+      <ul>
+        <li>$u(x) = x_1^2 x_2$ racionaliza el dato: $\mathrm{MRS}_{12} = 2x_2/x_1 = 2$ en $(1,1)$, igual a $p_1/p_2 = 2$; la curva de indiferencia es tangente a la recta $2x_1 + x_2 = 3$.</li>
+        <li>$v(x) = x_1(x_2+1)$ también lo racionaliza: $\mathrm{MRS}_{12} = (x_2+1)/x_1 = 2$ en $(1,1)$. Misma tangencia, misma restricción.</li>
+      </ul>
+      <p>Y sin embargo $u$ y $v$ <strong>no</strong> son transformaciones monótonas una de otra. Compara dos canastas fuera de muestra:</p>
+      <div class="tw"><table>
+        <thead><tr><th></th><th>$x = (3,1)$</th><th>$y = (1,7)$</th><th>Conclusión</th></tr></thead>
+        <tbody>
+          <tr><td>$u = x_1^2x_2$</td><td>$9\cdot1 = 9$</td><td>$1\cdot7 = 7$</td><td>$u(x) &gt; u(y)$: prefiere <strong>x</strong></td></tr>
+          <tr><td>$v = x_1(x_2+1)$</td><td>$3\cdot2 = 6$</td><td>$1\cdot8 = 8$</td><td>$v(x) &lt; v(y)$: prefiere <strong>y</strong></td></tr>
+        </tbody>
+      </table></div>
+      <p>Dos racionalizaciones del mismo dato observado que hacen <strong>predicciones opuestas</strong> fuera de muestra. Ese es el límite duro del enfoque con datos finitos.</p>
+    </div>
+
+    <h3>El estado del arte que menciona el libro</h3>
+    <ul>
+      <li><strong>Varian (1982)</strong> caracterizó un conjunto de canastas $x$ tales que $u(x) &gt; u(y)$ para toda $u$ que racionalice los datos.</li>
+      <li><strong>Knoblauch (1992)</strong> mostró que el conjunto de Varian es la solución <strong>completa</strong>: contiene todas esas canastas.</li>
+      <li><strong>Problema abierto (práctico):</strong> los datos de consumo reales casi siempre contienen violaciones de GARP. La investigación se orienta a criterios para decidir cuándo una violación es lo bastante menor como para ignorarla, y a algoritmos que construyan utilidades apropiadas sobre conjuntos de datos con violaciones leves.</li>
+    </ul>
+
+    <h2 id="mapa">Mapa lógico de §2.3</h2>
+<pre class="map">                 maximización de utilidad
+                  (estrict. monótona y
+                   estrict. cuasicóncava)
+                            ║
+                            ⇕  (equivalente)
+                            ║
+                          SARP
+                            ⇓  (más fuerte que)
+              WARP + balance presupuestario
+                            ⇓
+        homogeneidad grado 0  +  Slutsky semidef. negativa
+                            ⇓
+              ¿Slutsky simétrica? ── sí, si n = 2  ⟹ racionalizable
+                                 └─ no garantizada si n ≥ 3
+
+    Datos finitos:   GARP  ⟺  ∃ u continua, creciente y cóncava
+                            (Teorema de Afriat)</pre>
+
+    <hr>
+
+    <h2 id="merr">Errores frecuentes</h2>
+
+    <h3>Sobre §1.2</h3>
+    <ol>
+      <li>Escribir «Axioma 4» cuando se quiere decir no saciedad local. En este libro el <strong>primado</strong> es la versión débil: 4′ = no saciedad local, 4 = monotonicidad estricta; 5′ = convexidad, 5 = convexidad estricta.</li>
+      <li>Confundir $\geq$ con $\gg$ en el Axioma 4. La primera cláusula concluye $\succsim$; solo $\gg$ concluye $\succ$.</li>
+      <li>Afirmar que la continuidad es un supuesto sobre gustos. No lo es: es puramente topológica.</li>
+      <li>Decir que el Teorema 1.1 <em>requiere</em> monotonicidad estricta. No la requiere; se añade para simplificar la prueba.</li>
+      <li>Confundir concavidad con cuasiconcavidad. Solo la segunda es ordinal y solo la segunda aparece en el Teorema 1.3.</li>
+      <li>Tratar diferencias o razones de niveles de utilidad como si significaran algo. El Teorema 1.2 lo prohíbe.</li>
+      <li>Olvidar que $\succ$ y $\sim$ son transitivas pero <strong>no</strong> completas.</li>
+    </ol>
+
+    <h3>Sobre §2.3</h3>
+    <ol start="8">
+      <li>Escribir WARP con desigualdad débil en el consecuente. El antecedente es débil ($\leq$), el consecuente es <strong>estricto</strong> ($&gt;$). La asimetría es esencial.</li>
+      <li>Llamar «función de demanda» a $x(p,y)$ dentro de §2.3. Es una <strong>función de elección</strong> hasta que se demuestre que es racionalizable.</li>
+      <li>Creer que WARP basta para racionalizar en general. Basta con dos bienes; falla con tres o más.</li>
+      <li>Olvidar que el balance presupuestario es un supuesto <strong>añadido</strong>, no una consecuencia de WARP. Sin él no se obtiene ni homogeneidad ni el argumento de Slutsky.</li>
+      <li>Confundir SARP con GARP. SARP se enuncia sobre funciones de elección (datos «infinitos»); GARP es la versión más débil pensada para conjuntos <strong>finitos</strong> de datos, y es la que aparece en el Teorema de Afriat.</li>
+    </ol>
+
+    <h2 id="mauto">Autoevaluación</h2>
+
+    <div class="check" data-check>
+      <h4>§1.2 — Preferencias y utilidad</h4>
+      <ul>
+        <li><input type="checkbox" id="m1"><label for="m1">Demuestra que los Axiomas 1 y 2 permiten ordenar completamente cualquier subconjunto finito de $X$ (inducción).</label></li>
+        <li><input type="checkbox" id="m2"><label for="m2">Demuestra que $\sim$ es transitiva usando solo las Definiciones 1.1–1.3.</label></li>
+        <li><input type="checkbox" id="m3"><label for="m3">Verifica que las preferencias lexicográficas son completas y transitivas, y exhibe la sucesión que muestra la falla de la continuidad.</label></li>
+        <li><input type="checkbox" id="m4"><label for="m4">Muestra que si $u$ representa a $\succsim$ y $f$ es estrictamente creciente, entonces $f\circ u$ es cuasicóncava siempre que $u$ lo sea. ¿Vale lo mismo con «cóncava»?</label></li>
+        <li><input type="checkbox" id="m5"><label for="m5">Para $u = \min\{x_1,x_2\}$: ¿qué axiomas se cumplen y cuáles fallan? Contrasta con el Teorema 1.3.</label></li>
+        <li><input type="checkbox" id="m6"><label for="m6">Comprueba que la TMS es invariante ante transformaciones monótonas crecientes.</label></li>
+      </ul>
+    </div>
+
+    <div class="check" data-check>
+      <h4>§2.3 — Preferencia revelada</h4>
+      <ul>
+        <li><input type="checkbox" id="m7"><label for="m7">Reconstruye el paso de (2.5)–(2.6) a (2.7) y explica exactamente dónde se usa WARP y dónde el balance presupuestario.</label></li>
+        <li><input type="checkbox" id="m8"><label for="m8">Explica por qué $f(t)$ alcanza su máximo en $t=0$ y por qué eso da $f'(0)\leq 0$ y no $f'(0)=0$.</label></li>
+        <li><input type="checkbox" id="m9"><label for="m9">Construye tus propios datos con tres bienes que satisfagan WARP y violen SARP.</label></li>
+        <li><input type="checkbox" id="m10"><label for="m10">Con datos de dos bienes: dado un conjunto finito de observaciones, describe el algoritmo que verificaría GARP.</label></li>
+        <li><input type="checkbox" id="m11"><label for="m11">Explica en un párrafo, sin fórmulas, por qué «simetría de la matriz de Slutsky» y «transitividad de las preferencias» son la misma idea vista desde dos lenguajes.</label></li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <p><strong>Recorrido de estudio sugerido.</strong> Memoriza el cuadro de axiomas (grupo → nombre → versión débil/fuerte → efecto geométrico); es la base de todo el resto del curso. Rehaz la construcción $u(x)e \sim x$ del Teorema 1.1 en una hoja en blanco, señalando en cada paso qué axioma usaste. Escribe el Teorema 1.3 como una tabla de doble entrada y verifícalo con las cinco funciones de ejemplo. Pasa a §2.3 solo cuando puedas enunciar de memoria las tres propiedades observables de la demanda. Rehaz los seis pasos del argumento de Slutsky: es el cálculo más largo de la sección y aparece en exámenes. Cierra con el mapa lógico — si puedes reconstruirlo entero, dominaste la sección.</p>
+    </div>
+
+    </div><!-- /prose -->
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <div>Material de estudio propio basado en Bloch, <em>Proofs and Fundamentals</em> (cap. 3) y Jehle &amp; Reny, <em>Advanced Microeconomic Theory</em> (§1.2 y §2.3). Úsalo junto a los textos originales, no en lugar de ellos.</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  /* ---------- KaTeX ---------- */
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left:"$$", right:"$$", display:true},
+        {left:"$", right:"$", display:false}
+      ],
+      throwOnError:false
+    });
+  }
+
+  /* ---------- Track switching ---------- */
+  var tabs = {
+    "tab-sets":  {panel:"track-sets",  nav:"nav-sets",  hue:"var(--accent)", soft:"var(--accent-soft)"},
+    "tab-micro": {panel:"track-micro", nav:"nav-micro", hue:"var(--teal)",   soft:"var(--teal-soft)"}
+  };
+  function selectTrack(id){
+    Object.keys(tabs).forEach(function(t){
+      var cfg = tabs[t], on = (t === id);
+      document.getElementById(t).setAttribute("aria-selected", on ? "true" : "false");
+      document.getElementById(cfg.panel).classList.toggle("on", on);
+      document.getElementById(cfg.nav).hidden = !on;
+      if (on) {
+        document.documentElement.style.setProperty("--hue", cfg.hue);
+        document.documentElement.style.setProperty("--hue-soft", cfg.soft);
+      }
+    });
+    window.scrollTo({top:0, behavior:"auto"});
+  }
+  Object.keys(tabs).forEach(function(t){
+    document.getElementById(t).addEventListener("click", function(){ selectTrack(t); });
+  });
+
+  /* ---------- Mobile TOC ---------- */
+  var tg = document.getElementById("tocToggle"), tb = document.getElementById("tocBody");
+  tg.addEventListener("click", function(){
+    var open = tb.classList.toggle("open");
+    tg.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  document.querySelectorAll(".toc a").forEach(function(a){
+    a.addEventListener("click", function(){
+      if (window.innerWidth <= 900) { tb.classList.remove("open"); tg.setAttribute("aria-expanded","false"); }
+    });
+  });
+
+  /* ---------- Scrollspy ---------- */
+  var targets = [];
+  document.querySelectorAll(".toc a").forEach(function(a){
+    var el = document.querySelector(a.getAttribute("href"));
+    if (el) targets.push({link:a, el:el});
+  });
+  var spy = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        document.querySelectorAll(".toc a.active").forEach(function(x){ x.classList.remove("active"); });
+        var hit = targets.find(function(t){ return t.el === e.target; });
+        if (hit) hit.link.classList.add("active");
+      }
+    });
+  }, {rootMargin:"-15% 0px -75% 0px"});
+  targets.forEach(function(t){ spy.observe(t.el); });
+
+  /* ---------- Venn ---------- */
+  var vennData = {
+    union: {a:.30, b:.30, ab:.55, text:"<b>A ∪ B</b> — todo lo que está en A, en B, o en ambos. El «o» de la definición es inclusivo, por eso la zona central también se sombrea."},
+    inter: {a:0,   b:0,   ab:.55, text:"<b>A ∩ B</b> — solo lo que está en A <em>y</em> en B a la vez. Es el mayor conjunto contenido en ambos (Teorema 3.3.3 (1))."},
+    diff:  {a:.34, b:0,   ab:0,   text:"<b>A − B</b> — lo que está en A pero no en B. No hace falta que B ⊆ A: la diferencia se define para dos conjuntos cualesquiera."},
+    diffb: {a:0,   b:.34, ab:0,   text:"<b>B − A</b> — nótese que no es lo mismo que A − B. La diferencia no es conmutativa."},
+    sym:   {a:.32, b:.32, ab:0,   text:"<b>A Δ B</b> — la diferencia simétrica, (A − B) ∪ (B − A): lo que está en exactamente uno de los dos. Es el Ejercicio 3.3.14 del libro."}
+  };
+  var rA = document.getElementById("rA"), rB = document.getElementById("rB"),
+      rAB = document.getElementById("rAB"), cap = document.getElementById("vennCaption");
+  function setOp(op){
+    var d = vennData[op];
+    rA.setAttribute("fill-opacity", d.a);
+    rB.setAttribute("fill-opacity", d.b);
+    rAB.setAttribute("fill-opacity", d.ab);
+    cap.innerHTML = d.text;
+    document.querySelectorAll("#opbar button").forEach(function(b){
+      b.setAttribute("aria-pressed", b.dataset.op === op ? "true" : "false");
+    });
+  }
+  document.querySelectorAll("#opbar button").forEach(function(b){
+    b.addEventListener("click", function(){ setOp(b.dataset.op); });
+  });
+  setOp("union");
+
+  /* ---------- Self-check progress ---------- */
+  document.querySelectorAll("[data-check]").forEach(function(box){
+    var boxes = box.querySelectorAll("input[type=checkbox]");
+    var out = document.createElement("p");
+    out.className = "progress";
+    box.appendChild(out);
+    function upd(){
+      var n = box.querySelectorAll("input:checked").length;
+      out.textContent = n + " de " + boxes.length + (n === boxes.length ? " — completo" : " respondidas");
+    }
+    boxes.forEach(function(c){ c.addEventListener("change", upd); });
+    upd();
+  });
+
+  /* ---------- WARP calculator ---------- */
+  var warpBtn = document.getElementById("warpRun");
+  if (warpBtn) {
+    function parseVec(s){
+      return s.split(/[,\s]+/).filter(function(v){ return v !== ""; }).map(Number);
+    }
+    function dot(p, x){
+      if (p.length !== x.length || p.length === 0 || p.some(isNaN) || x.some(isNaN)) return null;
+      return p.reduce(function(s, pi, i){ return s + pi * x[i]; }, 0);
+    }
+    function fmt(v){ return Number.isInteger(v) ? v : v.toFixed(2); }
+    function run(){
+      var p0 = parseVec(document.getElementById("p0").value),
+          x0 = parseVec(document.getElementById("x0").value),
+          p1 = parseVec(document.getElementById("p1").value),
+          x1 = parseVec(document.getElementById("x1").value);
+      var out = document.getElementById("warpOut");
+      var p0x0 = dot(p0,x0), p0x1 = dot(p0,x1), p1x0 = dot(p1,x0), p1x1 = dot(p1,x1);
+      if ([p0x0,p0x1,p1x0,p1x1].some(function(v){ return v === null; })) {
+        out.innerHTML = '<div class="verdict none">Revisa las entradas: los cuatro vectores deben tener el mismo número de componentes y solo números.</div>';
+        return;
+      }
+      var same = x0.length === x1.length && x0.every(function(v,i){ return v === x1[i]; });
+      var html = '<div class="line">Gasto en la canasta elegida a p⁰: &nbsp; p⁰·x⁰ = ' + fmt(p0x0) + '</div>';
+      html += '<div class="line">Costo de x¹ a los precios p⁰: &nbsp; p⁰·x¹ = ' + fmt(p0x1) + '</div>';
+      html += '<div class="line">Gasto en la canasta elegida a p¹: &nbsp; p¹·x¹ = ' + fmt(p1x1) + '</div>';
+      html += '<div class="line">Costo de x⁰ a los precios p¹: &nbsp; p¹·x⁰ = ' + fmt(p1x0) + '</div>';
+      if (same) {
+        html += '<div class="verdict none">Las dos canastas son iguales. WARP solo restringe pares de canastas <em>distintas</em>, así que no dice nada aquí.</div>';
+        out.innerHTML = html; return;
+      }
+      var rev01 = p0x1 <= p0x0;   // x0 revelada preferida a x1
+      var rev10 = p1x0 <= p1x1;   // x1 revelada preferida a x0
+      var v;
+      if (!rev01 && !rev10) {
+        v = '<div class="verdict none">Ninguna canasta se revela preferida a la otra: en cada situación la canasta alternativa era inasequible. WARP no se activa, así que <strong>no hay violación</strong> — pero tampoco información.</div>';
+      } else if (rev01 && rev10) {
+        v = '<div class="verdict bad"><strong>WARP se viola.</strong> x⁰ está revelada preferida a x¹ (p⁰·x¹ ≤ p⁰·x⁰), pero x⁰ también era asequible cuando se eligió x¹ (p¹·x⁰ ≤ p¹·x¹). El consecuente exige la desigualdad <em>estricta</em> p¹·x⁰ &gt; p¹·x¹, y no se cumple.</div>';
+      } else if (rev01) {
+        v = '<div class="verdict ok"><strong>WARP se cumple.</strong> x⁰ está revelada preferida a x¹ (p⁰·x¹ ≤ p⁰·x⁰), y en efecto x⁰ era inasequible cuando se eligió x¹: p¹·x⁰ = ' + fmt(p1x0) + ' &gt; ' + fmt(p1x1) + ' = p¹·x¹.</div>';
+      } else {
+        v = '<div class="verdict ok"><strong>WARP se cumple.</strong> x¹ está revelada preferida a x⁰ (p¹·x⁰ ≤ p¹·x¹), y x¹ era inasequible cuando se eligió x⁰: p⁰·x¹ = ' + fmt(p0x1) + ' &gt; ' + fmt(p0x0) + ' = p⁰·x⁰.</div>';
+      }
+      out.innerHTML = html + v;
+    }
+    warpBtn.addEventListener("click", run);
+    document.querySelectorAll("#warpLoadOk, #warpLoadBad").forEach(function(b){
+      b.addEventListener("click", function(){
+        var bad = b.id === "warpLoadBad";
+        document.getElementById("p0").value = "1, 1";
+        document.getElementById("x0").value = "6, 4";
+        document.getElementById("p1").value = bad ? "1, 2" : "2, 1";
+        document.getElementById("x1").value = bad ? "4, 5" : "2, 8";
+        run();
+      });
+    });
+    run();
+  }
+
+});
+</script>
+</body>
+</html>
