@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cuaderno de estudio — Conjuntos y Microeconomía</title>
+<title>Microeconomía 2 - Lecturas</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <style>
 :root{
@@ -44,12 +44,16 @@ a{color:var(--hue)}
 .masthead-inner{max-width:1180px;margin:0 auto}
 .masthead h1{
   font-size:clamp(1.9rem,4.6vw,3rem);font-weight:600;letter-spacing:-.02em;
-  margin:0 0 .35rem;line-height:1.1;
+  margin:0 0 1.4rem;line-height:1.1;
 }
-.masthead p{margin:0 0 1.9rem;color:var(--ink-soft);max-width:62ch;font-size:1.02rem}
 
-/* Track tabs */
-.tracks{display:flex;gap:0;margin:0;padding:0;list-style:none;border-bottom:0}
+/* Track tabs — pinned to the top of the viewport at all times */
+.tracks{
+  display:flex;gap:0;list-style:none;border-bottom:0;
+  position:sticky;top:0;z-index:30;
+  margin:0 0 0;padding:.6rem 0;background:var(--surface);
+  border-bottom:1px solid var(--rule);
+}
 .track-btn{
   font-family:var(--serif);font-size:1.02rem;background:none;border:0;
   border-bottom:3px solid transparent;color:var(--ink-faint);
@@ -117,6 +121,34 @@ table{border-collapse:collapse;width:100%;font-size:.94rem;background:var(--surf
 th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--rule-soft);vertical-align:top}
 thead th{border-bottom:1.5px solid var(--ink);font-weight:600;font-size:.88rem}
 tbody tr:last-child td{border-bottom:0}
+
+/* ---------- Modal launcher buttons ---------- */
+.btn-launch{
+  font-family:var(--serif);font-size:1rem;padding:.7rem 1.1rem;cursor:pointer;
+  background:var(--surface);border:1.5px solid var(--hue);color:var(--hue);
+  border-radius:2px;margin:0 0 2.6rem;display:inline-flex;align-items:center;gap:.5rem;
+}
+.btn-launch:hover{background:var(--hue-soft)}
+.btn-launch::before{content:"⤢";font-size:.95em}
+
+/* ---------- Modal (dialog) ---------- */
+dialog.modal{
+  padding:0;border:0;border-radius:4px;background:transparent;color:inherit;
+  max-width:640px;width:92vw;max-height:88vh;overflow:visible;
+}
+dialog.modal::backdrop{background:rgba(22,34,46,.5)}
+dialog.modal[open]{animation:modal-in .16s ease}
+@keyframes modal-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){dialog.modal[open]{animation:none}}
+dialog.modal .venn-panel,dialog.modal .calc{
+  margin:0;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 12px 40px rgba(22,34,46,.25);
+}
+.modal-close{
+  position:absolute;top:.9rem;right:.9rem;width:2rem;height:2rem;line-height:1;
+  font-size:1.3rem;background:var(--surface);border:1px solid var(--rule);border-radius:50%;
+  color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;
+}
+.modal-close:hover{color:var(--ink);border-color:var(--ink-faint)}
 
 /* ---------- Venn hero ---------- */
 .venn-panel{background:var(--surface);border:1px solid var(--rule);padding:1.6rem;margin:0 0 2.6rem;border-radius:2px}
@@ -207,8 +239,7 @@ footer div{max-width:1180px;margin:0 auto;max-width:70ch}
 
 <header class="masthead">
   <div class="masthead-inner">
-    <h1>Cuaderno de estudio</h1>
-    <p>Dos materias, un solo lugar: la teoría de conjuntos que fundamenta las demostraciones, y la teoría del consumidor que las usa. Elige una pista.</p>
+    <h1>Microeconomía 2 - Lecturas</h1>
     <div class="tracks" role="tablist">
       <button class="track-btn" role="tab" id="tab-sets" aria-controls="track-sets" aria-selected="true" style="--tab-hue:var(--accent)">
         <span class="num">3</span>Conjuntos
@@ -273,38 +304,43 @@ footer div{max-width:1180px;margin:0 auto;max-width:70ch}
   <!-- ============================ CONJUNTOS ============================ -->
   <section class="track on" id="track-sets" role="tabpanel" aria-labelledby="tab-sets">
 
-    <div class="venn-panel">
-      <div class="venn-wrap">
-        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de Venn interactivo de dos conjuntos">
-          <defs>
-            <clipPath id="clipA"><circle cx="115" cy="100" r="66"/></clipPath>
-            <clipPath id="clipB"><circle cx="185" cy="100" r="66"/></clipPath>
-          </defs>
-          <rect x="6" y="14" width="288" height="172" fill="none" stroke="var(--rule)" stroke-width="1"/>
-          <!-- regions -->
-          <g>
-            <circle id="rA" class="region" cx="115" cy="100" r="66" fill="var(--set-a)" fill-opacity="0"/>
-            <circle id="rB" class="region" cx="185" cy="100" r="66" fill="var(--set-b)" fill-opacity="0"/>
-            <g clip-path="url(#clipA)"><circle id="rAB" class="region" cx="185" cy="100" r="66" fill="var(--accent)" fill-opacity="0"/></g>
-          </g>
-          <circle cx="115" cy="100" r="66" fill="none" stroke="var(--set-a)" stroke-width="1.5"/>
-          <circle cx="185" cy="100" r="66" fill="none" stroke="var(--set-b)" stroke-width="1.5"/>
-          <text x="66" y="52" font-family="Georgia,serif" font-size="17" font-style="italic" fill="var(--set-a)">A</text>
-          <text x="228" y="52" font-family="Georgia,serif" font-size="17" font-style="italic" fill="var(--set-b)">B</text>
-        </svg>
-        <div class="venn-ctrl">
-          <h3>Regiones sombreadas</h3>
-          <div class="opbar" id="opbar">
-            <button data-op="union" aria-pressed="true">A ∪ B</button>
-            <button data-op="inter" aria-pressed="false">A ∩ B</button>
-            <button data-op="diff" aria-pressed="false">A − B</button>
-            <button data-op="diffb" aria-pressed="false">B − A</button>
-            <button data-op="sym" aria-pressed="false">Δ</button>
+    <button class="btn-launch" id="openVenn" type="button">Abrir diagrama de Venn interactivo</button>
+
+    <dialog class="modal" id="vennModal">
+      <div class="venn-panel">
+        <button class="modal-close" id="closeVenn" type="button" aria-label="Cerrar">×</button>
+        <div class="venn-wrap">
+          <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de Venn interactivo de dos conjuntos">
+            <defs>
+              <clipPath id="clipA"><circle cx="115" cy="100" r="66"/></clipPath>
+              <clipPath id="clipB"><circle cx="185" cy="100" r="66"/></clipPath>
+            </defs>
+            <rect x="6" y="14" width="288" height="172" fill="none" stroke="var(--rule)" stroke-width="1"/>
+            <!-- regions -->
+            <g>
+              <circle id="rA" class="region" cx="115" cy="100" r="66" fill="var(--set-a)" fill-opacity="0"/>
+              <circle id="rB" class="region" cx="185" cy="100" r="66" fill="var(--set-b)" fill-opacity="0"/>
+              <g clip-path="url(#clipA)"><circle id="rAB" class="region" cx="185" cy="100" r="66" fill="var(--accent)" fill-opacity="0"/></g>
+            </g>
+            <circle cx="115" cy="100" r="66" fill="none" stroke="var(--set-a)" stroke-width="1.5"/>
+            <circle cx="185" cy="100" r="66" fill="none" stroke="var(--set-b)" stroke-width="1.5"/>
+            <text x="66" y="52" font-family="Georgia,serif" font-size="17" font-style="italic" fill="var(--set-a)">A</text>
+            <text x="228" y="52" font-family="Georgia,serif" font-size="17" font-style="italic" fill="var(--set-b)">B</text>
+          </svg>
+          <div class="venn-ctrl">
+            <h3>Regiones sombreadas</h3>
+            <div class="opbar" id="opbar">
+              <button data-op="union" aria-pressed="true">A ∪ B</button>
+              <button data-op="inter" aria-pressed="false">A ∩ B</button>
+              <button data-op="diff" aria-pressed="false">A − B</button>
+              <button data-op="diffb" aria-pressed="false">B − A</button>
+              <button data-op="sym" aria-pressed="false">Δ</button>
+            </div>
+            <p id="vennCaption"></p>
           </div>
-          <p id="vennCaption"></p>
         </div>
       </div>
-    </div>
+    </dialog>
 
     <div class="prose">
 
@@ -1043,28 +1079,33 @@ footer div{max-width:1180px;margin:0 auto;max-width:70ch}
   <!-- ============================ MICROECONOMÍA ============================ -->
   <section class="track" id="track-micro" role="tabpanel" aria-labelledby="tab-micro">
 
-    <div class="calc">
-      <h3>Verificador de WARP</h3>
-      <p class="lede">Introduce dos observaciones (precios y canasta elegida) y comprueba si el Axioma Débil se cumple. Separa las componentes con comas.</p>
-      <div class="obs-grid">
-        <div class="obs">
-          <h4>Observación 0</h4>
-          <div class="fld"><label for="p0">p⁰</label><input id="p0" value="1, 1"></div>
-          <div class="fld"><label for="x0">x⁰</label><input id="x0" value="6, 4"></div>
+    <button class="btn-launch" id="openWarp" type="button">Abrir verificador de WARP</button>
+
+    <dialog class="modal" id="warpModal">
+      <div class="calc">
+        <button class="modal-close" id="closeWarp" type="button" aria-label="Cerrar">×</button>
+        <h3>Verificador de WARP</h3>
+        <p class="lede">Introduce dos observaciones (precios y canasta elegida) y comprueba si el Axioma Débil se cumple. Separa las componentes con comas.</p>
+        <div class="obs-grid">
+          <div class="obs">
+            <h4>Observación 0</h4>
+            <div class="fld"><label for="p0">p⁰</label><input id="p0" value="1, 1"></div>
+            <div class="fld"><label for="x0">x⁰</label><input id="x0" value="6, 4"></div>
+          </div>
+          <div class="obs">
+            <h4>Observación 1</h4>
+            <div class="fld"><label for="p1">p¹</label><input id="p1" value="2, 1"></div>
+            <div class="fld"><label for="x1">x¹</label><input id="x1" value="2, 8"></div>
+          </div>
         </div>
-        <div class="obs">
-          <h4>Observación 1</h4>
-          <div class="fld"><label for="p1">p¹</label><input id="p1" value="2, 1"></div>
-          <div class="fld"><label for="x1">x¹</label><input id="x1" value="2, 8"></div>
+        <div class="calc-actions">
+          <button class="btn" id="warpRun">Comprobar</button>
+          <button class="btn ghost" id="warpLoadOk">Ejemplo consistente</button>
+          <button class="btn ghost" id="warpLoadBad">Ejemplo con violación</button>
         </div>
+        <div id="warpOut"></div>
       </div>
-      <div class="calc-actions">
-        <button class="btn" id="warpRun">Comprobar</button>
-        <button class="btn ghost" id="warpLoadOk">Ejemplo consistente</button>
-        <button class="btn ghost" id="warpLoadBad">Ejemplo con violación</button>
-      </div>
-      <div id="warpOut"></div>
-    </div>
+    </dialog>
 
     <div class="prose">
 
@@ -1767,13 +1808,25 @@ document.addEventListener("DOMContentLoaded", function(){
   }, {rootMargin:"-15% 0px -75% 0px"});
   targets.forEach(function(t){ spy.observe(t.el); });
 
+  /* ---------- Modals ---------- */
+  function wireModal(openId, closeId, dialogId){
+    var openBtn = document.getElementById(openId), closeBtn = document.getElementById(closeId),
+        dlg = document.getElementById(dialogId);
+    if (!openBtn || !dlg) return;
+    openBtn.addEventListener("click", function(){ dlg.showModal(); });
+    if (closeBtn) closeBtn.addEventListener("click", function(){ dlg.close(); });
+    dlg.addEventListener("click", function(e){ if (e.target === dlg) dlg.close(); });
+  }
+  wireModal("openVenn", "closeVenn", "vennModal");
+  wireModal("openWarp", "closeWarp", "warpModal");
+
   /* ---------- Venn ---------- */
   var vennData = {
-    union: {a:.30, b:.30, ab:.55, text:"<b>A ∪ B</b> — todo lo que está en A, en B, o en ambos. El «o» de la definición es inclusivo, por eso la zona central también se sombrea."},
-    inter: {a:0,   b:0,   ab:.55, text:"<b>A ∩ B</b> — solo lo que está en A <em>y</em> en B a la vez. Es el mayor conjunto contenido en ambos (Teorema 3.3.3 (1))."},
-    diff:  {a:.34, b:0,   ab:0,   text:"<b>A − B</b> — lo que está en A pero no en B. No hace falta que B ⊆ A: la diferencia se define para dos conjuntos cualesquiera."},
-    diffb: {a:0,   b:.34, ab:0,   text:"<b>B − A</b> — nótese que no es lo mismo que A − B. La diferencia no es conmutativa."},
-    sym:   {a:.32, b:.32, ab:0,   text:"<b>A Δ B</b> — la diferencia simétrica, (A − B) ∪ (B − A): lo que está en exactamente uno de los dos. Es el Ejercicio 3.3.14 del libro."}
+    union: {a:.30, b:.30, abFill:"var(--accent)",  ab:.55, text:"<b>A ∪ B</b> — todo lo que está en A, en B, o en ambos. El «o» de la definición es inclusivo, por eso la zona central también se sombrea."},
+    inter: {a:0,   b:0,   abFill:"var(--accent)",  ab:.55, text:"<b>A ∩ B</b> — solo lo que está en A <em>y</em> en B a la vez. Es el mayor conjunto contenido en ambos (Teorema 3.3.3 (1))."},
+    diff:  {a:.34, b:0,   abFill:"var(--surface)", ab:1,   text:"<b>A − B</b> — lo que está en A pero no en B. No hace falta que B ⊆ A: la diferencia se define para dos conjuntos cualesquiera."},
+    diffb: {a:0,   b:.34, abFill:"var(--surface)", ab:1,   text:"<b>B − A</b> — nótese que no es lo mismo que A − B. La diferencia no es conmutativa."},
+    sym:   {a:.32, b:.32, abFill:"var(--surface)", ab:1,   text:"<b>A Δ B</b> — la diferencia simétrica, (A − B) ∪ (B − A): lo que está en exactamente uno de los dos. La zona central (A ∩ B) queda sin pintar. Es el Ejercicio 3.3.14 del libro."}
   };
   var rA = document.getElementById("rA"), rB = document.getElementById("rB"),
       rAB = document.getElementById("rAB"), cap = document.getElementById("vennCaption");
@@ -1781,6 +1834,7 @@ document.addEventListener("DOMContentLoaded", function(){
     var d = vennData[op];
     rA.setAttribute("fill-opacity", d.a);
     rB.setAttribute("fill-opacity", d.b);
+    rAB.setAttribute("fill", d.abFill);
     rAB.setAttribute("fill-opacity", d.ab);
     cap.innerHTML = d.text;
     document.querySelectorAll("#opbar button").forEach(function(b){
